@@ -4,7 +4,7 @@ menu:
   Archives: archives  # 归档
   Categories: categories  # 分类
   Tags: tags  # 标签
-  Repository: https://github.com/mandylucky  # github repositories
+  # Repository: https://github.com/mandylucky  # github repositories
   # Books: books  # 豆瓣书单
   # Links: links  # 友链
   # About: about  # 关于
@@ -31,7 +31,7 @@ site:
     width: 40
     height: 40
     url: ../images/logo.png
-  title: Hexo # 页面title
+  title: Mandy's Blog # 页面title
   favicon: /favicon.png
   board: <p>勤则百弊皆除！</p> # 站点公告
   copyright: false # 底部版权信息
@@ -44,7 +44,8 @@ config:
   menu_highlight: false # 是否开启当前菜单高亮显示
   thumbnail: false # enable posts thumbnail, options: true, false
   excerpt_link: Read More
-
+#language
+language: zh-CN
 # Pagination
 pagination:
   number: false
@@ -59,7 +60,7 @@ widgets:
   - board  
   - category
   - tag
-  - tagcloud
+  # - tagcloud
   - archive
   - recent_posts
 
@@ -190,17 +191,17 @@ profile:
   author_title: Web Developer & Designer
   author_description: 个人简介。
   location: Beijing, China
-  follow: https://github.com/cofess
+  follow: https://github.com/mandylucky
   # Social Links
   social:
     links:
-      github: https://github.com/cofess
-      weibo: http://weibo.com/cofess
-      twitter: https://twitter.com/iwebued
+      github: https://github.com/mandylucky
+      # weibo: http://weibo.com/cofess
+      # twitter: https://twitter.com/iwebued
       # facebook: /
       # dribbble: /
-      behance: https://www.behance.net/cofess
-      rss: atom.xml
+      # behance: https://www.behance.net/cofess
+      # rss: atom.xml
     link_tooltip: true # enable the social link tooltip, options: true, false
   # My Skills 
   skills:
@@ -213,11 +214,11 @@ profile:
     平面设计: ★★★☆☆
   # My Personal Links
   links:
-    Github: https://github.com/cofess
-    Blog: http://blog.cofess.com
-    微博: http://weibo.com/cofess
-    花瓣: http://huaban.com/cofess
-    Behance: https://www.behance.net/cofess
+    # Github: https://github.com/cofess
+    # Blog: http://blog.cofess.com
+    # 微博: http://weibo.com/cofess
+    # 花瓣: http://huaban.com/cofess
+    # Behance: https://www.behance.net/cofess
   # My Personal Labels
   labels:
     - 前端
