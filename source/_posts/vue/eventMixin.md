@@ -1,7 +1,7 @@
 ---
 title: 事件相关的实例方法
 date: 2021-05-07 16:18:36
-tags: ['Vue实例方法','Vue事件相关实例方法','Vue深入浅出读书笔记']
+tags: ['Vue实例方法','Vue深入浅出读书笔记']
 categories : Vue
 toc: true
 ---

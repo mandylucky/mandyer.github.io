@@ -1,7 +1,7 @@
 ---
 title: Vue nextTick原理
 date: 2021-05-09 11:30:25
-tags: ['Vue实例方法','Vue生命相关实例方法','nextTick原理','Vue深入浅出读书笔记']
+tags: ['Vue实例方法','Vue深入浅出读书笔记']
 categories : Vue 
 toc: true
 ---

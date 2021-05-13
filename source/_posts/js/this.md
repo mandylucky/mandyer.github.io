@@ -1,7 +1,7 @@
 ---
 title: this
 date: 2021-05-11 07:44:54
-tags: ['你不知道的js读书笔记','this']
+tags: ['你不知道的js读书笔记','js基础']
 categories : js
 toc: true
 ---
@@ -207,4 +207,73 @@ o.foo() //3
 箭头函数不使用this的四种绑定规则，箭头函数是没有this，是根据外层作用域来决定this。所以箭头函数的绑定无法被修改
 
 ### 题目自测，你真的懂了吗？
-// TODO 待补充...
+
+```js
+var a = 1;
+function fn(){
+    "use strict"
+    console.log(a) 
+    var a = 2;
+    function fb(){
+        console.log(a); 
+        console.log(this,'==this')
+        console.log(this.a); 
+    }
+    return fb;
+}
+
+fn.call({a: 3 })();
+```
+<details>
+<summary><mark><font color=darkred>点击查看答案及解析</font></mark></summary>
+<p>打印结果：undefined、2、1 </p> 
+<b>undefined解析：</b>
+<p>变量提升，a 提升到函数作用域顶部</p>
+
+<b>2解析：</b>
+<p>闭包</p>
+
+<b>1解析：</b>
+<p>fn.call({a: 3 }) 返回了 fb引用 ，fn.call({a: 3 })() 等价于 fb()，因为默认绑定在非严格模式下this指向全局变量，严格模式下this 会绑定到undefined，所以非严格模式下 结果为1，严格模式下 TypeError</p>
+</details>
+
+```js
+let num=20;
+let obj={
+    num:40,
+    init:function(){
+        console.log(this.num)
+        function p(){
+            console.log(this.num) 
+        }
+        p.prototype.name=function(){
+            console.log(this.num)
+        }
+        return p
+    }
+} 
+let p=obj.init() 
+p()
+new p()
+```
+
+<details>
+<summary><mark><font color=darkred>点击查看答案及解析</font></mark></summary>
+<div>
+<b>let p=obj.init()解析</b>
+<p>执行console.log(this.num) this指向obj 所以返回结果为 40</p>
+
+<b>p()解析</b>
+<p>执行let p=obj.init()返回p 函数引用,执行p() 等价于直接执行 init内的p函数且使用默认规则this 指向window， let num=20 ；声明全局变量 num ，但是 let 声明的变量不属于顶层对象的属性，因此 num 为undefined </p>
+
+<b>new p()解析</b>
+<p>首先我们知道 构造函数中的this 指向实例对象，实例对象 原型链中没有 num ，因此 p函数执行时 this.num 会打印 undefined ,原型方法 name 未被执行</p>
+
+</div>
+
+</details>
+
+### 其他关联知识点 
+
+##### [顶层对象 vs  全局变量](https://es6.ruanyifeng.com/#docs/let#%E9%A1%B6%E5%B1%82%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%B1%9E%E6%80%A7)
+> 顶层对象，**在浏览器环境指的是window对象**，在 Node 指的是global对象。顶层对象的属性与全局变量挂钩，被认为是 JavaScript 语言最大的设计败笔之一。ES6 为了改变这一点，一方面规定，为了保持兼容性，**var命令和function命令声明的全局变量，依旧是顶层对象的属性；另一方面规定，let命令、const命令、class命令声明的全局变量，不属于顶层对象的属性**。也就是说，从 ES6 开始，全局变量将逐步与顶层对象的属性脱钩。
