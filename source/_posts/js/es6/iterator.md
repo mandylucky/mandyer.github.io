@@ -99,3 +99,4 @@ function readLinesSync(file) {
 
 **for...in循环读取键名，for...of循环读取键值。**
 
+https://es6.ruanyifeng.com/#docs/iterator
