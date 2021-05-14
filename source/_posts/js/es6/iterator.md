@@ -75,7 +75,7 @@ Symbol.iterator方法返回一个遍历器对象，在遍历器对象上可以�
 遍历器对象除了具有next()方法，还具有return()、throw()方法。自定义的遍历器对象必须部署next()方法，return()和throw()方法是否部署是可选择的
 
 **return()方法:break 或者 出错  会触发执行return()方法**
-```
+```js
 function readLinesSync(file) {
   return {
     [Symbol.iterator]() {
@@ -98,5 +98,52 @@ function readLinesSync(file) {
 **一个数据结构只要部署了Symbol.iterator 属性，就被是为具有iterator 接口，就可以用  for...of 循环遍历它的成员。<span style="background-color:yellow">也就是说for...of 循环内部调用的是数据结构的Symbol.iterator 方法</span>**
 
 **for...in循环读取键名，for...of循环读取键值。**
+```js
+var arr = ['a', 'b', 'c', 'd'];
 
-https://es6.ruanyifeng.com/#docs/iterator
+for (let a in arr) {
+  console.log(a); // 0 1 2 3
+}
+
+for (let a of arr) {
+  console.log(a); // a b c d
+}
+```
+**计算生成的数据结构**
+有些数据结构是在现有数据结构的基础上，计算生成的。eg:数组、Set、Map 都部署了以下三个方法，调用后都返回遍历器对象
+- entries() 返回一个遍历器对象，用来遍历[键名，键值]组成的数组，数组的键名就是索引，Set 的键名，键值相同，Map结构的Iterator 结构默认就是调用entries方法
+
+- keys() 返回一个遍历器对象，用来遍历所有的键名
+- values() 返回一个遍历器对象，用来遍历所有的键值
+
+**与其他遍历语法的比较**
+1. for循环:写法麻烦 
+```js
+for (var index = 0; index < myArray.length; index++) {
+  console.log(myArray[index]);
+}
+```
+
+2. 数组内置方法forEach:无法中途跳出forEach循环，break或者return 命令不能奏效
+```js
+myArray.forEach(function (value) {
+  console.log(value);
+});
+```
+
+3. for...in循环：遍历键名。
+缺点
+- 数组的键名是数字，但是for...in 循环是以字符串作为键名
+- 会遍历原型链上的键。
+- 以任意顺序遍历
+总之，for...in循环主要是为遍历对象而设计的，不适用于遍历数组。
+
+- for ...of 循环
+优点
+- 有着同for...in一样的简洁语法，但是没有for...in那些缺点
+- 它可以与break、continue和return配合使用
+- 提供了遍历所有数据结构的统一操作接口。
+
+# 相关链接
+[阮一峰ES6](https://es6.ruanyifeng.com/#docs/iterator)
+
