@@ -1,5 +1,5 @@
 ---
-title: Generator 生成器
+title: Generator基础
 tags: ['ES6']
 toc: true
 date: 2021-05-14 07:00:00
@@ -302,40 +302,127 @@ Generator 函数执行产生的上下文环境，一旦遇到yield命令，就�
 Generator 可以暂停函数执行，返回任意表达式的值。这种特点使得 Generator 有多种应用场景。
 
 1. 异步操作的同步化表达
-2. 控制流管理
-3. 部署 Iterator 接口
-4. 作为数据结构
-
-# 使用例子
-### 实现斐波那契数列
 ```js
-function* fibonacci() {
-  let [prev, curr] = [0, 1];
-  for (;;) {
-    yield curr;
-    [prev, curr] = [curr, prev + curr];
+function * main(){
+  var result=yield request("http://some.url");
+  var resp=JSON.parse(result);
+  console.log(resp.value)
+}
+function request(url){
+  makeAjaxCall(url,function(response){
+    it.next(response) 
+  })
+}
+var it=main();
+it.next()
+```
+2. 控制流管理
+```js
+// 多个步骤的操作，使用回调函数
+step1(function (value1) {
+  step2(value1, function(value2) {
+    step3(value2, function(value3) {
+      step4(value3, function(value4) {
+        // Do something with value4
+      });
+    });
+  });
+});
+// 多个步骤的操作，使用Promise
+Promise.resolve(step1)
+  .then(step2)
+  .then(step3)
+  .then(step4)
+  .then(function (value4) {
+    // Do something with value4
+  }, function (error) {
+    // Handle any error from step1 through step4
+  })
+  .done();
+
+  // 多个步骤的操作，Generator
+function* longRunningTask(value1) {
+  try {
+    var value2 = yield step1(value1);
+    var value3 = yield step2(value2);
+    var value4 = yield step3(value3);
+    var value5 = yield step4(value4);
+    // Do something with value4
+  } catch (e) {
+    // Handle any error from step1 through step4
+  }
+}
+// generator 自动执行函数
+function secheduler(task){
+  let value;
+  var taskObj=task.next(value);
+  if(!taskObj.done){
+    value=taskObj.value;
+    secheduler(task)
+  }
+}
+```
+
+```js
+// 利用for...of循环会自动依次执行yield命令的特性，提供一种更简单的控制流管理的方法。
+let steps = [step1Func, step2Func, step3Func];
+
+function* iterateSteps(steps){
+  for (var i=0; i< steps.length; i++){
+    var step = steps[i];
+    yield step();
+  }
+}
+let jobs = [job1, job2, job3];
+
+function* iterateJobs(jobs){
+  for (var i=0; i< jobs.length; i++){
+    var job = jobs[i];
+    yield* iterateSteps(job.steps);
+  }
+}
+for (var step of iterateJobs(jobs)){
+  console.log(step.id);
+}
+```
+
+3. 部署 Iterator 接口
+利用Generator函数可以在任意对象上部署Iterator 接口
+```js
+function * iterEntries(obj){
+  let keys=Object.keys(obj);
+  for(let i=0;i<keys.length;i++){
+    let key=keys[i];
+    yield [key,obj[key]]
   }
 }
 
-for (let n of fibonacci()) {
-  if (n > 1000) break;
-  console.log(n);
+let myObj={foo:3,bar:7}
+for(let [key,val] of iterEntries(myObj)){
+  console.log(key,val)
 }
 ```
+4. 作为数据结构
+Generator 可以看作是一个数组结构，因为 Generator 函数可以返回一系列的值，这意味着它可以对任意表达式，提供类似数组的接口。
 
-### 原生对象添加遍历器接口
-```
-function* objectEntries(obj) {
-  let propKeys = Reflect.ownKeys(obj);
-
-  for (let propKey of propKeys) {
-    yield [propKey, obj[propKey]];
-  }
+```js
+// Generator 写法
+function* doStuff() {
+  yield fs.readFile.bind(null, 'hello.txt');
+  yield fs.readFile.bind(null, 'world.txt');
+  yield fs.readFile.bind(null, 'and-such.txt');
+}
+// ES5  写法
+function doStuff() {
+  return [
+    fs.readFile.bind(null, 'hello.txt'),
+    fs.readFile.bind(null, 'world.txt'),
+    fs.readFile.bind(null, 'and-such.txt')
+  ];
+}
+for (task of doStuff()) {
+  // task是一个函数，可以像回调函数那样使用它
 }
 
-let jane = { first: 'Jane', last: 'Doe' };
-
-for (let [key, value] of objectEntries(jane)) {
-  console.log(`${key}: ${value}`);
-}
 ```
+上面的函数，可以用一模一样的for...of循环处理！两相一比较，可以看出 Generator 使得数据或者操作，具备了类似数组的接口。
