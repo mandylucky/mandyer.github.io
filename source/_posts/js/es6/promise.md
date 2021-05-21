@@ -6,7 +6,7 @@ date: 2021-05-21 07:43:56
 categories: js
 ---
 使用例子
-```js 
+```js
 const promise = new Promise(function(resolve, reject) {
   if (/* 异步操作成功 */){
     resolve(value);
@@ -47,16 +47,13 @@ class MyPromise{
         if(this._status !==PENDING) return;
         const runFulfilled=(value)=>{
             let cb;
-            while(this._fullfillQueue.length){
-                cb=this._fullfillQueue.shift()
+            while(cb=this._fullfillQueue.shift()){
                 cb(value)
             }
-
         }
         const runRejected=(value)=>{
              let cb;
-            while(this._rejectQueue.length){
-                cb=this._rejectQueue.shift()
+            while(cb=this._rejectQueue.shift()){
                 cb(value)
             }
         }
@@ -76,9 +73,67 @@ class MyPromise{
             runFulfilled(value)
         }
     }
+     // _reject:只有状态为pending 时才执行，修改状态、修改值、执行并清空_rejectQueue中函数。
     _reject(err){
         if(this._status !==PENDING) return
-        this._status
+        this._status=REJECTED
+        this._value=err;
+        let cb;
+        while(cb=this._rejectQueue.shift()){
+            cb(err)
+        }
     }
+    // 返回promise实例,将then中传入得成功失败回调进行封装，根据当前状态直接执行或者加入队列
+    then(onFulfilled,onRejected){
+        const {_value,_status}=this;
+        return new MyPromise((onNextFulfilled,onNextRejected)=>{
+            const runFulfill=(value)=>{
+                try{
+                    if(typeof onFulfilled !=="function"){
+                        onNextFulfilled(value)
+                    }else{
+                        let res=onFulfilled(value);
+                        if(res instanceof MyPromise){
+                            res.then(onNextFulfilled,onNextRejected)
+                        }else{
+                            onNextFulfilled(res)
+                        }
+                    }
+                }catch(err){
+                    onNextRejected(err)
+                }
+            }
+            const runReject=(error)=>{
+                 try{
+                    if(typeof onRejected !== 'function'){
+                        onNextRejected(error)
+                    }else{
+                        let res=onRejected(error)
+                        if(res instanceof MyPromise){
+                            res.then(onNextFulfilled,onNextRejected)
+                        }else{
+                            onNextFulfilled(res)
+                        }
+
+                    }
+                }catch(err){
+                    onNextRejected(err)
+                }
+            }
+            switch(_status){
+                case PENDING:
+                    this._fullfillQueue.push(runFulfill)
+                    this._rejectQueue.push(runReject)
+                    break;
+                case FULFILLED:
+                    runFulfill(_value)
+                    break;
+                case REJECTED:
+                    runReject(_value)
+            }
+
+        })
+    }
+
 }
 ```
