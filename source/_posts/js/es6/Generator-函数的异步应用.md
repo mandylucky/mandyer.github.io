@@ -132,22 +132,204 @@ result.value.then(function(data){
 
 # Thunk函数 
 Thunk 函数是自动执行Generator 函数的一种方法   
-
-参数的求值策略:传名调用、传值调用【JavaScript 语言是传值调用】
+### 参数的求值策略
+首先了解下编译器求值策略：传值调用、传名调用 
 ```js
+// 求值
 var x = 1;
 function f(m) {
   return m * 2;
 }
-f(x + 5)
-
 
 f(x + 5)
-// 传值调用时，等同于
+```
+```js
+f(x + 5)
+// 1.传值调用时，等同于
 f(6)
-
+```
+```js
 f(x + 5)
-// 传名调用时，等同于
+// 2.传名调用时，等同于
 (x + 5) * 2
 ```
-### JavaScript 语言的 Thunk 函数 
+**JavaScript语言使用的方式是传值调用，但我们可以用一种其他方法来实现传名调用——Thunk函数！**
+
+### Thunk 函数的含义
+
+编译器的”传名调用“实现，往往将参数放到一个临时函数之中。这个临时函数就叫做Thunk函数。   
+
+```js
+var thunk = function () {
+  return x + 5;
+};
+
+function f(thunk) {
+  return thunk() * 2;
+}
+
+```
+
+这就是 Thunk 函数的定义，它是“传名调用”的一种实现策略，用来替换某个表达式 或者函数 。
+
+### JavaScript 语言的Thunk函数  
+在 JavaScript 语言中，Thunk 函数替换的不是表达式，而是多参数函数，将其替换成一个只接受回调函数作为参数的单参数函数。
+
+任何函数，只要参数有回调函数，就能写成 Thunk 函数的形式。
+```js
+// 正常版本的readFile（多参数版本）
+fs.readFile(fileName, callback);
+
+// Thunk版本的readFile（单参数版本）
+var Thunk = function (fileName) {
+  return function (callback) {
+    return fs.readFile(fileName, callback);
+  };
+};
+
+var readFileThunk = Thunk(fileName);
+readFileThunk(callback);
+
+```
+
+简单版Thunk函数转换器 
+
+```js
+// ES6版本
+const Thunk = function(fn) {
+  return function (...args) {
+    return function (callback) {
+      return fn.call(this, ...args, callback);
+    }
+  };
+};
+```
+生产环境的转换器建议使用Thunkify 模块
+
+
+
+### Generator 函数的流程管理 
+Thunk 函数现在可以用于 Generator 函数的自动流程管理。
+
+Generator 函数自动执行,但是这样并不适合异步
+```js
+function * gen(){
+}
+const g=gen()
+let res=g.next()
+while(!res.done){
+  res=g.next()
+}
+```
+如果适合异步操作必须保证前一步操作完成，才执行后一步
+
+yield 命令用于将程序的执行权移出Generator 函数，那么就需要一种方法（Thunk函数），将执行权再交还给Generator 函数  
+
+### Thunk函数的自动流程管理 
+```js
+var g=gen()
+var r1=g.next();
+r1.value(function(err,data){
+  if(err) throw err;
+  var r2=g.next(data);
+  r2.value(function(err,data){
+    if(err) throw err;
+    g.next(data)
+  })
+})
+```
+
+```js
+// 递归实现
+function run(fn){
+  var gen=fn();
+  function next(err,data){
+    var result=gen.next(data);
+    if(result.done) return
+    result.value(next)
+  }
+  next()
+}
+
+function* g() {
+  // ...
+}
+
+run(g);
+```
+
+Thunk 函数并不是 Generator 函数自动执行的唯一方案。因为自动执行的关键是，必须有一种机制，自动控制 Generator 函数的流程，接收和交还程序的执行权。回调函数可以做到这一点，Promise 对象也可以做到这一点。
+
+# co模块
+用于 Generator 函数的自动执行。
+```js
+var co=require('co');
+co(gen).then(function (){
+  console.log('Generator 函数执行完成');
+});
+```
+Generator 函数只要传入co函数，就会自动执行。co函数返回一个Promise对象，因此可以用then方法添加回调函数。
+
+### co模块原理 
+Generator 就是一个异步操作的容器。它的自动执行需要一种机制，当异步操作有了结果，能够自动交回执行权。
+
+两种方法可以做到这一点。
+- 回调函数。将异步操作包装成 Thunk 函数，在回调函数里面交回执行权。
+- Promise 对象。将异步操作包装成 Promise 对象，用then方法交回执行权。
+
+co 模块其实就是将两种自动执行器（Thunk 函数和 Promise 对象），包装成一个模块。使用 co 的前提条件是，Generator 函数的yield命令后面，只能是 Thunk 函数或 Promise 对象。
+
+```js
+// 基于 Promise 对象的自动执行 
+function run(gen){
+  var g=gen();
+  function next(data){
+    var result=g.next(data)
+    if(result.done) return result.value;
+    result.value.then(function(data){
+      next(data)
+    })
+  }
+  next()
+}
+run(gen)
+```
+
+
+```js 
+// co 模块的源码
+function co(gen) {
+  var ctx = this;
+
+  return new Promise(function(resolve, reject) {
+    if (typeof gen === 'function') gen = gen.call(ctx);
+    if (!gen || typeof gen.next !== 'function') return resolve(gen);
+
+    onFulfilled();
+    function onFulfilled(res) {
+      var ret;
+      try {
+        ret = gen.next(res);
+      } catch (e) {
+        return reject(e);
+      }
+      next(ret);
+    }
+  });
+}
+
+function next(ret) {
+  if (ret.done) return resolve(ret.value);
+  var value = toPromise.call(ctx, ret.value);
+  if (value && isPromise(value)) return value.then(onFulfilled, onRejected);
+  return onRejected(
+    new TypeError(
+      'You may only yield a function, promise, generator, array, or object, '
+      + 'but the following object was passed: "'
+      + String(ret.value)
+      + '"'
+    )
+  );
+}
+
+```
