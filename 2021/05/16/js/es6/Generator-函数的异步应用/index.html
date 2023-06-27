@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>Generator 函数的异步应用 | Mandy&#39;s Blog</title>
+  <meta name="description" content="传统方法异步编程的方法，大概有下面四种  回调函数 时间监听   发布&#x2F;订阅 Promise 对象    Generator 函数将JavaScript 异步编程带入了一个全新的阶段 基本概念所谓”异步”，简单说就是一个任务不是连续完成的，可以理解成该任务被人为分成两段，先执行第一段，然后转而执行其他任务，等做好了准备，再回过头执行第二段。相应地，连续的执行就叫做同步。 回调函数回调函数，就是把任">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Generator 函数的异步应用">
+<meta property="og:url" content="https://mandylucky.github.io/2021/05/16/js/es6/Generator-%E5%87%BD%E6%95%B0%E7%9A%84%E5%BC%82%E6%AD%A5%E5%BA%94%E7%94%A8/index.html">
+<meta property="og:site_name" content="Mandy&#39;s Blog">
+<meta property="og:description" content="传统方法异步编程的方法，大概有下面四种  回调函数 时间监听   发布&#x2F;订阅 Promise 对象    Generator 函数将JavaScript 异步编程带入了一个全新的阶段 基本概念所谓”异步”，简单说就是一个任务不是连续完成的，可以理解成该任务被人为分成两段，先执行第一段，然后转而执行其他任务，等做好了准备，再回过头执行第二段。相应地，连续的执行就叫做同步。 回调函数回调函数，就是把任">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-05-15T23:34:04.000Z">
+<meta property="article:modified_time" content="2023-06-27T03:33:17.753Z">
+<meta property="article:author" content="Mandy">
+<meta property="article:tag" content="异步">
+<meta property="article:tag" content="ES6">
+<meta name="twitter:card" content="summary">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://mandylucky.github.io/2021/05/16/js/es6/Generator-%E5%87%BD%E6%95%B0%E7%9A%84%E5%BC%82%E6%AD%A5%E5%BA%94%E7%94%A8/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Mandy&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/mandylucky" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpeg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">Mandy</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md"></h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Beijing, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/mandylucky" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>勤则百弊皆除！</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Vue/">Vue</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/js/">js</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B5%8F%E8%A7%88%E5%99%A8/">浏览器</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E4%B9%8B%E5%A4%96/">编程之外</a><span class="category-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CORS/" rel="tag">CORS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ES6/" rel="tag">ES6</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/STAR/" rel="tag">STAR</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue%E5%AE%9E%E4%BE%8B%E6%96%B9%E6%B3%95/" rel="tag">Vue实例方法</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BA%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">Vue深入浅出读书笔记</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js%E5%9F%BA%E7%A1%80/" rel="tag">js基础</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BD%A0%E4%B8%8D%E7%9F%A5%E9%81%93%E7%9A%84js%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">你不知道的js读书笔记</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86/" rel="tag">响应式原理</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95/" rel="tag">学习方法</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BC%82%E6%AD%A5/" rel="tag">异步</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">数据结构</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/" rel="tag">最佳实践</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8%E5%AD%98%E5%82%A8/" rel="tag">浏览器存储</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%9E%B6%E6%9E%84/" rel="tag">浏览器架构</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8%E7%BC%93%E5%AD%98/" rel="tag">浏览器缓存</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8%E8%B7%A8%E5%9F%9F/" rel="tag">浏览器跨域</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95%E5%9F%BA%E7%A1%80/" rel="tag">算法基础</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%87%AA%E6%88%91%E6%8F%90%E5%8D%87/" rel="tag">自我提升</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/06/">六月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">五月 2021</a><span class="archive-list-count">25</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Vue/">Vue</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/06/27/js/vue/vue%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/" class="title">vue最佳实践</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-06-27T06:50:49.000Z" itemprop="datePublished">2023-06-27</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/js/">js</a>
+              </p>
+              <p class="item-title">
+                <a href="/2021/05/21/js/es6/promise/" class="title">promise</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-05-20T23:43:56.000Z" itemprop="datePublished">2021-05-21</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%B5%8F%E8%A7%88%E5%99%A8/">浏览器</a>
+              </p>
+              <p class="item-title">
+                <a href="/2021/05/18/%E6%B5%8F%E8%A7%88%E5%99%A8/CORS/" class="title">CORS</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-05-17T23:38:13.000Z" itemprop="datePublished">2021-05-18</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%B5%8F%E8%A7%88%E5%99%A8/">浏览器</a>
+              </p>
+              <p class="item-title">
+                <a href="/2021/05/17/%E6%B5%8F%E8%A7%88%E5%99%A8/%E6%B5%8F%E8%A7%88%E5%99%A8%E5%AD%98%E5%82%A8/" class="title">浏览器存储</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-05-17T14:08:22.000Z" itemprop="datePublished">2021-05-17</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%B5%8F%E8%A7%88%E5%99%A8/">浏览器</a>
+              </p>
+              <p class="item-title">
+                <a href="/2021/05/17/%E6%B5%8F%E8%A7%88%E5%99%A8/%E6%B5%8F%E8%A7%88%E5%99%A8%E7%BC%93%E5%AD%98/" class="title">浏览器缓存</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-05-17T14:08:22.000Z" itemprop="datePublished">2021-05-17</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BC%A0%E7%BB%9F%E6%96%B9%E6%B3%95"><span class="toc-number">1.</span> <span class="toc-text">传统方法</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-number">2.</span> <span class="toc-text">基本概念</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9E%E8%B0%83%E5%87%BD%E6%95%B0"><span class="toc-number">2.0.1.</span> <span class="toc-text">回调函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Promise"><span class="toc-number">2.0.2.</span> <span class="toc-text">Promise</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Generator-%E5%87%BD%E6%95%B0"><span class="toc-number">3.</span> <span class="toc-text">Generator 函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%8F%E7%A8%8B"><span class="toc-number">3.0.1.</span> <span class="toc-text">协程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%8F%E7%A8%8B%E7%9A%84-Generator-%E5%87%BD%E6%95%B0%E5%AE%9E%E7%8E%B0"><span class="toc-number">3.0.2.</span> <span class="toc-text">协程的 Generator 函数实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Generator-%E5%87%BD%E6%95%B0%E7%9A%84%E6%95%B0%E6%8D%AE%E4%BA%A4%E6%8D%A2%E5%92%8C%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86"><span class="toc-number">3.0.3.</span> <span class="toc-text">Generator 函数的数据交换和错误处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1%E7%9A%84%E5%B0%81%E8%A3%85"><span class="toc-number">3.0.4.</span> <span class="toc-text">异步任务的封装</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Thunk%E5%87%BD%E6%95%B0"><span class="toc-number">4.</span> <span class="toc-text">Thunk函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E6%95%B0%E7%9A%84%E6%B1%82%E5%80%BC%E7%AD%96%E7%95%A5"><span class="toc-number">4.0.1.</span> <span class="toc-text">参数的求值策略</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Thunk-%E5%87%BD%E6%95%B0%E7%9A%84%E5%90%AB%E4%B9%89"><span class="toc-number">4.0.2.</span> <span class="toc-text">Thunk 函数的含义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JavaScript-%E8%AF%AD%E8%A8%80%E7%9A%84Thunk%E5%87%BD%E6%95%B0"><span class="toc-number">4.0.3.</span> <span class="toc-text">JavaScript 语言的Thunk函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Generator-%E5%87%BD%E6%95%B0%E7%9A%84%E6%B5%81%E7%A8%8B%E7%AE%A1%E7%90%86"><span class="toc-number">4.0.4.</span> <span class="toc-text">Generator 函数的流程管理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Thunk%E5%87%BD%E6%95%B0%E7%9A%84%E8%87%AA%E5%8A%A8%E6%B5%81%E7%A8%8B%E7%AE%A1%E7%90%86"><span class="toc-number">4.0.5.</span> <span class="toc-text">Thunk函数的自动流程管理</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#co%E6%A8%A1%E5%9D%97"><span class="toc-number">5.</span> <span class="toc-text">co模块</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#co%E6%A8%A1%E5%9D%97%E5%8E%9F%E7%90%86"><span class="toc-number">5.0.1.</span> <span class="toc-text">co模块原理</span></a></li></ol></li></ol></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-js/es6/Generator-函数的异步应用" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Generator 函数的异步应用
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2021/05/16/js/es6/Generator-%E5%87%BD%E6%95%B0%E7%9A%84%E5%BC%82%E6%AD%A5%E5%BA%94%E7%94%A8/" class="article-date">
+	  <time datetime="2021-05-15T23:34:04.000Z" itemprop="datePublished">2021-05-16</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/js/">js</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/ES6/" rel="tag">ES6</a>, <a class="article-tag-link-link" href="/tags/%E5%BC%82%E6%AD%A5/" rel="tag">异步</a>
+  </span>
+
+
+        
+
+        <!-- <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2021/05/16/js/es6/Generator-%E5%87%BD%E6%95%B0%E7%9A%84%E5%BC%82%E6%AD%A5%E5%BA%94%E7%94%A8/#comments" class="article-comment-link">评论</a></span> -->
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h1 id="传统方法"><a href="#传统方法" class="headerlink" title="传统方法"></a>传统方法</h1><p>异步编程的方法，大概有下面四种</p>
+<ul>
+<li>回调函数</li>
+<li>时间监听  </li>
+<li>发布/订阅</li>
+<li>Promise 对象  </li>
+</ul>
+<p>Generator 函数将JavaScript 异步编程带入了一个全新的阶段</p>
+<h1 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h1><p>所谓”异步”，简单说就是一个任务不是连续完成的，可以理解成该任务被人为分成两段，先执行第一段，然后转而执行其他任务，等做好了准备，再回过头执行第二段。<br>相应地，连续的执行就叫做同步。</p>
+<h3 id="回调函数"><a href="#回调函数" class="headerlink" title="回调函数"></a>回调函数</h3><p>回调函数，就是把任务的第二段单独写在一个函数里面，等到重新执行这个任务的时候，就直接调用这个函数</p>
+<p>缺点：回调函数本身并没有问题，它的问题出现在多个回调函数嵌套。代码会横向发展，无法管理。多个异步操作形成了强耦合，只要有一个操作需要修改，它的上层回调函数和下层回调函数，可能都要跟着修改 ，这种情况称为”回调地狱”</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">fs.<span class="title function_">readFile</span>(fileA, <span class="string">&#x27;utf-8&#x27;</span>, <span class="keyword">function</span> (<span class="params">err, data</span>) &#123;</span><br><span class="line">  fs.<span class="title function_">readFile</span>(fileB, <span class="string">&#x27;utf-8&#x27;</span>, <span class="keyword">function</span> (<span class="params">err, data</span>) &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="Promise"><a href="#Promise" class="headerlink" title="Promise"></a>Promise</h3><p>Promise 对象是为了解决”回调地狱”问题而提出的。它不是新的语法功能，而是一种新的写法，允许将回调函数的嵌套，改成链式调用。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> readFile = <span class="built_in">require</span>(<span class="string">&#x27;fs-readfile-promise&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="title function_">readFile</span>(fileA)</span><br><span class="line">.<span class="title function_">then</span>(<span class="keyword">function</span> (<span class="params">data</span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(data.<span class="title function_">toString</span>());</span><br><span class="line">&#125;)</span><br><span class="line">.<span class="title function_">then</span>(<span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="title function_">readFile</span>(fileB);</span><br><span class="line">&#125;)</span><br><span class="line">.<span class="title function_">then</span>(<span class="keyword">function</span> (<span class="params">data</span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(data.<span class="title function_">toString</span>());</span><br><span class="line">&#125;)</span><br><span class="line">.<span class="title function_">catch</span>(<span class="keyword">function</span> (<span class="params">err</span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(err);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>Promise 提供then方法加载回调函数，catch方法捕捉执行过程中抛出的错误。</p>
+<p>Promise 的写法只是回调函数的改进，使用then方法以后，异步任务的两段执行看得更清楚了，除此以外，并无新意。</p>
+<p>缺点：Promise 的最大问题是代码冗余，原来的任务被 Promise 包装了一下，不管什么操作，一眼看去都是一堆then，原来的语义变得很不清楚。</p>
+<h1 id="Generator-函数"><a href="#Generator-函数" class="headerlink" title="Generator 函数"></a>Generator 函数</h1><h3 id="协程"><a href="#协程" class="headerlink" title="协程"></a>协程</h3><p>多个线程相互协作，完成异步任务（多任务的解决方案）</p>
+<p>携程有点像函数，又有点像线程，它的运行流程大致如下 </p>
+<ul>
+<li>第一步，协程A开始执行</li>
+<li>第二步，协程A执行到一半，进入暂停，执行权转移到协程B</li>
+<li>第三步，一段时间后，协程B交还执行权</li>
+<li>第四步，协程A恢复执行</li>
+</ul>
+<p>上面流程的协程A，就是异步任务，因为它分成两段（或多段）执行。</p>
+<h3 id="协程的-Generator-函数实现"><a href="#协程的-Generator-函数实现" class="headerlink" title="协程的 Generator 函数实现"></a>协程的 Generator 函数实现</h3><p>Generator 函数是协程在ES6的实现，最大特点是可以交出函数的执行权（既暂停执行）</p>
+<p>Generator 函数就是一个异步任务的容器，异步操作需要暂停的地方都用yield 语句注明  </p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span>* <span class="title function_">gen</span>(<span class="params">x</span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> y = <span class="keyword">yield</span> x + <span class="number">2</span>;</span><br><span class="line">  <span class="keyword">return</span> y;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> g = <span class="title function_">gen</span>(<span class="number">1</span>);</span><br><span class="line">g.<span class="title function_">next</span>() <span class="comment">// &#123; value: 3, done: false &#125;</span></span><br><span class="line">g.<span class="title function_">next</span>() <span class="comment">// &#123; value: undefined, done: true &#125;</span></span><br></pre></td></tr></table></figure>
+<p>next方法的作用是分阶段执行Generator函数。每次调用next方法，会返回一个对象，表示当前阶段的信息（value属性和done属性）</p>
+<p>value属性是yield语句后面表达式的值，表示当前阶段的值；done属性是一个布尔值，表示 Generator 函数是否执行完毕，即是否还有下一个阶段。</p>
+<h3 id="Generator-函数的数据交换和错误处理"><a href="#Generator-函数的数据交换和错误处理" class="headerlink" title="Generator 函数的数据交换和错误处理"></a>Generator 函数的数据交换和错误处理</h3><p><span style="background-color:yellow">Generator 函数可以暂停执行和恢复执行，这是它能封装异步任务的根本原因。除此之外，它还有两个特性，使它可以作为异步编程的完整解决方案：函数体内外的数据交换和错误处理机制。</span></p>
+<p>next返回值的 value 属性，是 Generator 函数向外输出数据；next方法还可以接受参数，向 Generator 函数体内输入数据。</p>
+<p>Generator 函数内部还可以部署错误处理代码，捕获函数体外抛出的错误。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span>* <span class="title function_">gen</span>(<span class="params">x</span>)&#123;</span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> y = <span class="keyword">yield</span> x + <span class="number">2</span>;</span><br><span class="line">  &#125; <span class="keyword">catch</span> (e)&#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(e);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> y;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> g = <span class="title function_">gen</span>(<span class="number">1</span>);</span><br><span class="line">g.<span class="title function_">next</span>();</span><br><span class="line">g.<span class="keyword">throw</span>(<span class="string">&#x27;出错了&#x27;</span>);</span><br><span class="line"><span class="comment">// 出错了</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="异步任务的封装"><a href="#异步任务的封装" class="headerlink" title="异步任务的封装"></a>异步任务的封装</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> fetch = <span class="built_in">require</span>(<span class="string">&#x27;node-fetch&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span>* <span class="title function_">gen</span>(<span class="params"></span>)&#123;</span><br><span class="line">  <span class="keyword">var</span> url = <span class="string">&#x27;https://api.github.com/users/github&#x27;</span>;</span><br><span class="line">  <span class="keyword">var</span> result = <span class="keyword">yield</span> <span class="title function_">fetch</span>(url);</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(result.<span class="property">bio</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> g = <span class="title function_">gen</span>();</span><br><span class="line"><span class="keyword">var</span> result = g.<span class="title function_">next</span>();</span><br><span class="line"></span><br><span class="line">result.<span class="property">value</span>.<span class="title function_">then</span>(<span class="keyword">function</span>(<span class="params">data</span>)&#123;</span><br><span class="line">  <span class="keyword">return</span> data.<span class="title function_">json</span>();</span><br><span class="line">&#125;).<span class="title function_">then</span>(<span class="keyword">function</span>(<span class="params">data</span>)&#123;</span><br><span class="line">  g.<span class="title function_">next</span>(data);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>虽然 Generator 函数将异步操作表示得很简洁，但是流程管理却不方便（即何时执行第一阶段、何时执行第二阶段）。</p>
+<h1 id="Thunk函数"><a href="#Thunk函数" class="headerlink" title="Thunk函数"></a>Thunk函数</h1><p>Thunk 函数是自动执行Generator 函数的一种方法   </p>
+<h3 id="参数的求值策略"><a href="#参数的求值策略" class="headerlink" title="参数的求值策略"></a>参数的求值策略</h3><p>首先了解下编译器求值策略：传值调用、传名调用 </p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 求值</span></span><br><span class="line"><span class="keyword">var</span> x = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">f</span>(<span class="params">m</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> m * <span class="number">2</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">f</span>(x + <span class="number">5</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">f</span>(x + <span class="number">5</span>)</span><br><span class="line"><span class="comment">// 1.传值调用时，等同于</span></span><br><span class="line"><span class="title function_">f</span>(<span class="number">6</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">f</span>(x + <span class="number">5</span>)</span><br><span class="line"><span class="comment">// 2.传名调用时，等同于</span></span><br><span class="line">(x + <span class="number">5</span>) * <span class="number">2</span></span><br></pre></td></tr></table></figure>
+<p><strong>JavaScript语言使用的方式是传值调用，但我们可以用一种其他方法来实现传名调用——Thunk函数！</strong></p>
+<h3 id="Thunk-函数的含义"><a href="#Thunk-函数的含义" class="headerlink" title="Thunk 函数的含义"></a>Thunk 函数的含义</h3><p>编译器的”传名调用“实现，往往将参数放到一个临时函数之中。这个临时函数就叫做Thunk函数。   </p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> thunk = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> x + <span class="number">5</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">f</span>(<span class="params">thunk</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="title function_">thunk</span>() * <span class="number">2</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>这就是 Thunk 函数的定义，它是“传名调用”的一种实现策略，用来替换某个表达式 或者函数 。</p>
+<h3 id="JavaScript-语言的Thunk函数"><a href="#JavaScript-语言的Thunk函数" class="headerlink" title="JavaScript 语言的Thunk函数"></a>JavaScript 语言的Thunk函数</h3><p>在 JavaScript 语言中，Thunk 函数替换的不是表达式，而是多参数函数，将其替换成一个只接受回调函数作为参数的单参数函数。</p>
+<p>任何函数，只要参数有回调函数，就能写成 Thunk 函数的形式。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 正常版本的readFile（多参数版本）</span></span><br><span class="line">fs.<span class="title function_">readFile</span>(fileName, callback);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Thunk版本的readFile（单参数版本）</span></span><br><span class="line"><span class="keyword">var</span> <span class="title class_">Thunk</span> = <span class="keyword">function</span> (<span class="params">fileName</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">function</span> (<span class="params">callback</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> fs.<span class="title function_">readFile</span>(fileName, callback);</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> readFileThunk = <span class="title class_">Thunk</span>(fileName);</span><br><span class="line"><span class="title function_">readFileThunk</span>(callback);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>简单版Thunk函数转换器 </p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ES6版本</span></span><br><span class="line"><span class="keyword">const</span> <span class="title class_">Thunk</span> = <span class="keyword">function</span>(<span class="params">fn</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">function</span> (<span class="params">...args</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">function</span> (<span class="params">callback</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> fn.<span class="title function_">call</span>(<span class="variable language_">this</span>, ...args, callback);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>生产环境的转换器建议使用Thunkify 模块</p>
+<h3 id="Generator-函数的流程管理"><a href="#Generator-函数的流程管理" class="headerlink" title="Generator 函数的流程管理"></a>Generator 函数的流程管理</h3><p>Thunk 函数现在可以用于 Generator 函数的自动流程管理。</p>
+<p>Generator 函数自动执行,但是这样并不适合异步</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> * <span class="title function_">gen</span>(<span class="params"></span>)&#123;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> g=<span class="title function_">gen</span>()</span><br><span class="line"><span class="keyword">let</span> res=g.<span class="title function_">next</span>()</span><br><span class="line"><span class="keyword">while</span>(!res.<span class="property">done</span>)&#123;</span><br><span class="line">  res=g.<span class="title function_">next</span>()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果适合异步操作必须保证前一步操作完成，才执行后一步</p>
+<p>yield 命令用于将程序的执行权移出Generator 函数，那么就需要一种方法（Thunk函数），将执行权再交还给Generator 函数  </p>
+<h3 id="Thunk函数的自动流程管理"><a href="#Thunk函数的自动流程管理" class="headerlink" title="Thunk函数的自动流程管理"></a>Thunk函数的自动流程管理</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> g=<span class="title function_">gen</span>()</span><br><span class="line"><span class="keyword">var</span> r1=g.<span class="title function_">next</span>();</span><br><span class="line">r1.<span class="title function_">value</span>(<span class="keyword">function</span>(<span class="params">err,data</span>)&#123;</span><br><span class="line">  <span class="keyword">if</span>(err) <span class="keyword">throw</span> err;</span><br><span class="line">  <span class="keyword">var</span> r2=g.<span class="title function_">next</span>(data);</span><br><span class="line">  r2.<span class="title function_">value</span>(<span class="keyword">function</span>(<span class="params">err,data</span>)&#123;</span><br><span class="line">    <span class="keyword">if</span>(err) <span class="keyword">throw</span> err;</span><br><span class="line">    g.<span class="title function_">next</span>(data)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 递归实现</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">run</span>(<span class="params">fn</span>)&#123;</span><br><span class="line">  <span class="keyword">var</span> gen=<span class="title function_">fn</span>();</span><br><span class="line">  <span class="keyword">function</span> <span class="title function_">next</span>(<span class="params">err,data</span>)&#123;</span><br><span class="line">    <span class="keyword">var</span> result=gen.<span class="title function_">next</span>(data);</span><br><span class="line">    <span class="keyword">if</span>(result.<span class="property">done</span>) <span class="keyword">return</span></span><br><span class="line">    result.<span class="title function_">value</span>(next)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="title function_">next</span>()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span>* <span class="title function_">g</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">run</span>(g);</span><br></pre></td></tr></table></figure>
+
+<p>Thunk 函数并不是 Generator 函数自动执行的唯一方案。因为自动执行的关键是，必须有一种机制，自动控制 Generator 函数的流程，接收和交还程序的执行权。回调函数可以做到这一点，Promise 对象也可以做到这一点。</p>
+<h1 id="co模块"><a href="#co模块" class="headerlink" title="co模块"></a>co模块</h1><p>用于 Generator 函数的自动执行。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> co=<span class="built_in">require</span>(<span class="string">&#x27;co&#x27;</span>);</span><br><span class="line"><span class="title function_">co</span>(gen).<span class="title function_">then</span>(<span class="keyword">function</span> (<span class="params"></span>)&#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;Generator 函数执行完成&#x27;</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>Generator 函数只要传入co函数，就会自动执行。co函数返回一个Promise对象，因此可以用then方法添加回调函数。</p>
+<h3 id="co模块原理"><a href="#co模块原理" class="headerlink" title="co模块原理"></a>co模块原理</h3><p>Generator 就是一个异步操作的容器。它的自动执行需要一种机制，当异步操作有了结果，能够自动交回执行权。</p>
+<p>两种方法可以做到这一点。</p>
+<ul>
+<li>回调函数。将异步操作包装成 Thunk 函数，在回调函数里面交回执行权。</li>
+<li>Promise 对象。将异步操作包装成 Promise 对象，用then方法交回执行权。</li>
+</ul>
+<p>co 模块其实就是将两种自动执行器（Thunk 函数和 Promise 对象），包装成一个模块。使用 co 的前提条件是，Generator 函数的yield命令后面，只能是 Thunk 函数或 Promise 对象。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 基于 Promise 对象的自动执行 </span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">run</span>(<span class="params">gen</span>)&#123;</span><br><span class="line">  <span class="keyword">var</span> g=<span class="title function_">gen</span>();</span><br><span class="line">  <span class="keyword">function</span> <span class="title function_">next</span>(<span class="params">data</span>)&#123;</span><br><span class="line">    <span class="keyword">var</span> result=g.<span class="title function_">next</span>(data)</span><br><span class="line">    <span class="keyword">if</span>(result.<span class="property">done</span>) <span class="keyword">return</span> result.<span class="property">value</span>;</span><br><span class="line">    result.<span class="property">value</span>.<span class="title function_">then</span>(<span class="keyword">function</span>(<span class="params">data</span>)&#123;</span><br><span class="line">      <span class="title function_">next</span>(data)</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="title function_">next</span>()</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">run</span>(gen)</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// co 模块的源码</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">co</span>(<span class="params">gen</span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> ctx = <span class="variable language_">this</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="keyword">function</span>(<span class="params">resolve, reject</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> gen === <span class="string">&#x27;function&#x27;</span>) gen = gen.<span class="title function_">call</span>(ctx);</span><br><span class="line">    <span class="keyword">if</span> (!gen || <span class="keyword">typeof</span> gen.<span class="property">next</span> !== <span class="string">&#x27;function&#x27;</span>) <span class="keyword">return</span> <span class="title function_">resolve</span>(gen);</span><br><span class="line"></span><br><span class="line">    <span class="title function_">onFulfilled</span>();</span><br><span class="line">    <span class="keyword">function</span> <span class="title function_">onFulfilled</span>(<span class="params">res</span>) &#123;</span><br><span class="line">      <span class="keyword">var</span> ret;</span><br><span class="line">      <span class="keyword">try</span> &#123;</span><br><span class="line">        ret = gen.<span class="title function_">next</span>(res);</span><br><span class="line">      &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="title function_">reject</span>(e);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="title function_">next</span>(ret);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">next</span>(<span class="params">ret</span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (ret.<span class="property">done</span>) <span class="keyword">return</span> <span class="title function_">resolve</span>(ret.<span class="property">value</span>);</span><br><span class="line">  <span class="keyword">var</span> value = toPromise.<span class="title function_">call</span>(ctx, ret.<span class="property">value</span>);</span><br><span class="line">  <span class="keyword">if</span> (value &amp;&amp; <span class="title function_">isPromise</span>(value)) <span class="keyword">return</span> value.<span class="title function_">then</span>(onFulfilled, onRejected);</span><br><span class="line">  <span class="keyword">return</span> <span class="title function_">onRejected</span>(</span><br><span class="line">    <span class="keyword">new</span> <span class="title class_">TypeError</span>(</span><br><span class="line">      <span class="string">&#x27;You may only yield a function, promise, generator, array, or object, &#x27;</span></span><br><span class="line">      + <span class="string">&#x27;but the following object was passed: &quot;&#x27;</span></span><br><span class="line">      + <span class="title class_">String</span>(ret.<span class="property">value</span>)</span><br><span class="line">      + <span class="string">&#x27;&quot;&#x27;</span></span><br><span class="line">    )</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <div class="article-footer">
+      <!-- <blockquote class="mt-2x"> -->
+  <!-- <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://mandylucky.github.io/2021/05/16/js/es6/Generator-%E5%87%BD%E6%95%B0%E7%9A%84%E5%BC%82%E6%AD%A5%E5%BA%94%E7%94%A8/" title="Generator 函数的异步应用" target="_blank" rel="external">https://mandylucky.github.io/2021/05/16/js/es6/Generator-%E5%87%BD%E6%95%B0%E7%9A%84%E5%BC%82%E6%AD%A5%E5%BA%94%E7%94%A8/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul> -->
+<!-- </blockquote> -->
+
+
+<!-- <div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/mandylucky" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpeg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/mandylucky" target="_blank"><span class="text-dark">Mandy</span><small class="ml-1x"></small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div> -->
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2021/05/17/%E6%B5%8F%E8%A7%88%E5%99%A8/%E6%B5%8F%E8%A7%88%E5%99%A8%E8%B7%A8%E5%9F%9F/" title="浏览器同源政策及其规避方法"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2021/05/15/thinking/Feynman/" title="Feynman"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">
+        <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/mandylucky" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>对象 | Mandy&#39;s Blog</title>
+  <meta name="description" content="语法两种形式定义:声明(文字)形式、构造形式 12345678&#x2F;&#x2F; 文字形式var myObj&#x3D;&amp;#123;    key:value    &#x2F;&#x2F;...&amp;#125;&#x2F;&#x2F; 构造形式var myObj&#x3D;new Object();myObj.key&#x3D;value  类型数组是对象的一种子类型，函数也是对象的一种子类型，内置对象（String、Number、Boolean、Object、Function、A">
+<meta property="og:type" content="article">
+<meta property="og:title" content="对象">
+<meta property="og:url" content="https://mandylucky.github.io/2021/05/12/js/%E5%AF%B9%E8%B1%A1/index.html">
+<meta property="og:site_name" content="Mandy&#39;s Blog">
+<meta property="og:description" content="语法两种形式定义:声明(文字)形式、构造形式 12345678&#x2F;&#x2F; 文字形式var myObj&#x3D;&amp;#123;    key:value    &#x2F;&#x2F;...&amp;#125;&#x2F;&#x2F; 构造形式var myObj&#x3D;new Object();myObj.key&#x3D;value  类型数组是对象的一种子类型，函数也是对象的一种子类型，内置对象（String、Number、Boolean、Object、Function、A">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-05-12T15:35:38.000Z">
+<meta property="article:modified_time" content="2023-06-27T03:33:17.754Z">
+<meta property="article:author" content="Mandy">
+<meta property="article:tag" content="你不知道的js读书笔记">
+<meta property="article:tag" content="js基础">
+<meta name="twitter:card" content="summary">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://mandylucky.github.io/2021/05/12/js/%E5%AF%B9%E8%B1%A1/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Mandy&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/mandylucky" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpeg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">Mandy</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md"></h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Beijing, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/mandylucky" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>勤则百弊皆除！</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Vue/">Vue</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/js/">js</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B5%8F%E8%A7%88%E5%99%A8/">浏览器</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E4%B9%8B%E5%A4%96/">编程之外</a><span class="category-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CORS/" rel="tag">CORS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ES6/" rel="tag">ES6</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/STAR/" rel="tag">STAR</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue%E5%AE%9E%E4%BE%8B%E6%96%B9%E6%B3%95/" rel="tag">Vue实例方法</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BA%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">Vue深入浅出读书笔记</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js%E5%9F%BA%E7%A1%80/" rel="tag">js基础</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BD%A0%E4%B8%8D%E7%9F%A5%E9%81%93%E7%9A%84js%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">你不知道的js读书笔记</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86/" rel="tag">响应式原理</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95/" rel="tag">学习方法</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BC%82%E6%AD%A5/" rel="tag">异步</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">数据结构</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/" rel="tag">最佳实践</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8%E5%AD%98%E5%82%A8/" rel="tag">浏览器存储</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%9E%B6%E6%9E%84/" rel="tag">浏览器架构</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8%E7%BC%93%E5%AD%98/" rel="tag">浏览器缓存</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8%E8%B7%A8%E5%9F%9F/" rel="tag">浏览器跨域</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95%E5%9F%BA%E7%A1%80/" rel="tag">算法基础</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%87%AA%E6%88%91%E6%8F%90%E5%8D%87/" rel="tag">自我提升</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/06/">六月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">五月 2021</a><span class="archive-list-count">25</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Vue/">Vue</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/06/27/js/vue/vue%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/" class="title">vue最佳实践</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-06-27T06:50:49.000Z" itemprop="datePublished">2023-06-27</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/js/">js</a>
+              </p>
+              <p class="item-title">
+                <a href="/2021/05/21/js/es6/promise/" class="title">promise</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-05-20T23:43:56.000Z" itemprop="datePublished">2021-05-21</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%B5%8F%E8%A7%88%E5%99%A8/">浏览器</a>
+              </p>
+              <p class="item-title">
+                <a href="/2021/05/18/%E6%B5%8F%E8%A7%88%E5%99%A8/CORS/" class="title">CORS</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-05-17T23:38:13.000Z" itemprop="datePublished">2021-05-18</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%B5%8F%E8%A7%88%E5%99%A8/">浏览器</a>
+              </p>
+              <p class="item-title">
+                <a href="/2021/05/17/%E6%B5%8F%E8%A7%88%E5%99%A8/%E6%B5%8F%E8%A7%88%E5%99%A8%E5%AD%98%E5%82%A8/" class="title">浏览器存储</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-05-17T14:08:22.000Z" itemprop="datePublished">2021-05-17</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%B5%8F%E8%A7%88%E5%99%A8/">浏览器</a>
+              </p>
+              <p class="item-title">
+                <a href="/2021/05/17/%E6%B5%8F%E8%A7%88%E5%99%A8/%E6%B5%8F%E8%A7%88%E5%99%A8%E7%BC%93%E5%AD%98/" class="title">浏览器缓存</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-05-17T14:08:22.000Z" itemprop="datePublished">2021-05-17</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AF%AD%E6%B3%95"><span class="toc-number">1.</span> <span class="toc-text">语法</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%B1%BB%E5%9E%8B"><span class="toc-number">2.</span> <span class="toc-text">类型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%86%85%E5%AE%B9"><span class="toc-number">3.</span> <span class="toc-text">内容</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%AF%E8%AE%A1%E7%AE%97%E5%B1%9E%E6%80%A7%E5%90%8D"><span class="toc-number">3.0.1.</span> <span class="toc-text">可计算属性名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B1%9E%E6%80%A7%E4%B8%8E%E6%96%B9%E6%B3%95"><span class="toc-number">3.0.2.</span> <span class="toc-text">属性与方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%8D%E5%88%B6%E5%AF%B9%E8%B1%A1"><span class="toc-number">3.0.3.</span> <span class="toc-text">复制对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B1%9E%E6%80%A7%E6%8F%8F%E8%BF%B0%E7%AC%A6"><span class="toc-number">3.0.4.</span> <span class="toc-text">属性描述符</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86%E7%82%B9"><span class="toc-number">4.</span> <span class="toc-text">相关知识点</span></a></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-js/对象" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      对象
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2021/05/12/js/%E5%AF%B9%E8%B1%A1/" class="article-date">
+	  <time datetime="2021-05-12T15:35:38.000Z" itemprop="datePublished">2021-05-12</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/js/">js</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/js%E5%9F%BA%E7%A1%80/" rel="tag">js基础</a>, <a class="article-tag-link-link" href="/tags/%E4%BD%A0%E4%B8%8D%E7%9F%A5%E9%81%93%E7%9A%84js%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">你不知道的js读书笔记</a>
+  </span>
+
+
+        
+
+        <!-- <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2021/05/12/js/%E5%AF%B9%E8%B1%A1/#comments" class="article-comment-link">评论</a></span> -->
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h1 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h1><p><strong>两种形式定义:声明(文字)形式、构造形式</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 文字形式</span></span><br><span class="line"><span class="keyword">var</span> myObj=&#123;</span><br><span class="line">    <span class="attr">key</span>:value</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 构造形式</span></span><br><span class="line"><span class="keyword">var</span> myObj=<span class="keyword">new</span> <span class="title class_">Object</span>();</span><br><span class="line">myObj.<span class="property">key</span>=value</span><br></pre></td></tr></table></figure>
+
+<h1 id="类型"><a href="#类型" class="headerlink" title="类型"></a>类型</h1><p>数组是对象的一种子类型，函数也是对象的一种子类型，内置对象（String、Number、Boolean、Object、Function、Array、Date、RegExp、Error） 也是对象的一种子类型</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> str=<span class="string">&quot;i am a string&quot;</span>;</span><br><span class="line"><span class="keyword">typeof</span> str;<span class="comment">//string</span></span><br><span class="line">str.<span class="property">length</span> <span class="comment">//13</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> strObject=<span class="keyword">new</span> <span class="title class_">String</span>(<span class="string">&quot;i am a string&quot;</span>);</span><br><span class="line"><span class="keyword">typeof</span> strObject <span class="comment">//&quot;object&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>之所以能在字面量上面直接访问属性或者方法，因为引擎自动把字面量转换成string对象，所以可以访问属性和方法</strong></p>
+<ul>
+<li>null和undefined 没有对应的构造形式，只有文字</li>
+<li>Date 只有构造形式，没有文字</li>
+<li>Object、Array、Function、RegExp 无论使用文字形式还是构造形式，他们都是对象</li>
+<li>Error 对象一般都是在抛出异常时自动创建</li>
+</ul>
+<h1 id="内容"><a href="#内容" class="headerlink" title="内容"></a>内容</h1><ul>
+<li>对象的属性名永远都是字符串</li>
+<li>访问属性：两种方式 . 和  [“..”],. 要求属性名满足标识符命名规范，[“..”] 语法可以接收任意字符串 </li>
+</ul>
+<h3 id="可计算属性名"><a href="#可计算属性名" class="headerlink" title="可计算属性名"></a>可计算属性名</h3><p>使用[]包裹一个表达式来当作属性名，最常用的场景是ES6 的Symbol</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> prefix=<span class="string">&quot;foo&quot;</span>;</span><br><span class="line"><span class="keyword">const</span> key1 = <span class="title class_">Symbol</span>(<span class="string">&#x27;description&#x27;</span>);</span><br><span class="line"><span class="keyword">var</span> myObj=&#123;</span><br><span class="line">    [prefix+<span class="string">&#x27;bar&#x27;</span>]:<span class="string">&quot;hello&quot;</span></span><br><span class="line">    [key1]:<span class="string">&quot;world&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="属性与方法"><a href="#属性与方法" class="headerlink" title="属性与方法"></a>属性与方法</h3><p>如果访问对象属性是一个函数，被称为 “方法访问”，其他情况称为 “属性访问”</p>
+<h3 id="复制对象"><a href="#复制对象" class="headerlink" title="复制对象"></a>复制对象</h3><p>浅拷贝：<code>Object.assign()</code><br>深拷贝：<code>JSON.parse(JSON.stringify(someObj))</code></p>
+<h3 id="属性描述符"><a href="#属性描述符" class="headerlink" title="属性描述符"></a>属性描述符</h3><p><strong>ES5之后所有属性都具备了属性描述符</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> myObj=&#123;</span><br><span class="line">    <span class="attr">a</span>:<span class="number">2</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="title class_">Object</span>.<span class="title function_">getOwnPropertyDescriptor</span>(myObj,<span class="string">&quot;a&quot;</span>)</span><br><span class="line"><span class="comment">// &#123;</span></span><br><span class="line"><span class="comment">//     value:2,</span></span><br><span class="line"><span class="comment">//     writable:true,</span></span><br><span class="line"><span class="comment">//     enumerable:true,</span></span><br><span class="line"><span class="comment">//     configurable:true</span></span><br><span class="line"><span class="comment">// &#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>创建普通属性时属性描述符会有默认值,我们也可以使用<code>Object.defineProperty(...)</code>来添加一个新属性或者修改一个已有属性（configurable为true时）并对其特性进行配置</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> myObject=&#123;&#125;</span><br><span class="line"><span class="title class_">Object</span>.<span class="title function_">defineProperty</span>(myObject,<span class="string">&quot;a&quot;</span>,&#123;</span><br><span class="line">    <span class="attr">value</span>:<span class="number">2</span>,</span><br><span class="line">    <span class="attr">writable</span>:<span class="literal">true</span>,</span><br><span class="line">    <span class="attr">configurable</span>:<span class="literal">true</span>,</span><br><span class="line">    <span class="attr">enumerable</span>:<span class="literal">true</span></span><br><span class="line">&#125;)</span><br><span class="line">myObject.<span class="property">a</span> <span class="comment">//2</span></span><br></pre></td></tr></table></figure>
+<ol>
+<li><strong>Writable:</strong> 决定是否可以修改属性值   </li>
+<li><strong>Configurable:</strong> 设置属性是否可配置，只要属性是可配置的就可以使用defineProperty(…)方法来修改属性描述符。configurable 只能由true 改为false ,不能由false 改为true。且不能删除属性 delete 语句会失败</li>
+<li><strong>Enumerable:</strong> 用于控制属性是否会出现在对象的属性枚举中。</li>
+<li><strong>getter</strong> 后面会详细介绍</li>
+<li><strong>setter</strong> 后面会详细介绍</li>
+</ol>
+<p><strong>不变性</strong></p>
+<ul>
+<li><p>对象常量<br>结合writeable:false 和 configurable 就可以创建一个真正的常量属性（不可修改，从定义或者删除） </p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> myObj=&#123;&#125;</span><br><span class="line"><span class="title class_">Object</span>.<span class="title function_">defineProperty</span>(myObj,<span class="string">&quot;FAVORITE_NUMBER&quot;</span>,&#123;</span><br><span class="line">    <span class="attr">value</span>:<span class="number">42</span>;</span><br><span class="line">    <span class="attr">writable</span>:<span class="literal">false</span>,</span><br><span class="line">    <span class="attr">configurable</span>:<span class="literal">false</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></li>
+<li><p>禁止扩展(prevent Extensions)<br>Object.preventExtensions(…) 禁止一个对象添加新属性，但是可以修改已有属性值 或者 删除已有属性</p>
+</li>
+<li><p>密封(seal)<br>Object.seal(…) 会创建一个”密封”的对象，这个方法等价于Object.preventExtensions(…)+configurable:false。密封之后不仅不能添加新属性，也不能重新配置或者删除现有属性（可以改属性值）</p>
+</li>
+<li><p>冻结(freeze)<br>Object.freeze(…) 会创建一个冻结对象，这个方法等价于Object.seal(…)+writable:false,这个方法是对象上的级别最高的不可变性，它会禁止对对象本身及其任意直接属性的修改 深度冻结一个对象</p>
+</li>
+</ul>
+<p><em>tips:冻结对象中如果引用了其他对象，也会被冻结</em><br><em>Object.freeze(…) 在Vue中可用于大列表的性能优化</em><br><strong>[[Get]] 获取属性值操作</strong></p>
+<p>对象默认内置[[Get]]操作，该操作首先在对象中查找是否有名称相同的属性，有则返回属性值。没有会返回undefined</p>
+<p><strong>[[Put]] 属性赋值操作</strong></p>
+<ol>
+<li>对象已存在这个属性<ul>
+<li>属性是否是访问描述符？如果是存在setter则调用setter</li>
+<li>属性数据描述中 writable 是否是false,是非严格失败 、严格TypeError</li>
+<li>如果都不是，该值设置为属性的值</li>
+</ul>
+</li>
+<li>对象中不存在这个属性<br> TODO 待补充…</li>
+</ol>
+<p><strong>Getter 和 Setter</strong><br>对象默认的[[Put]] 和 [[Get]] 操作分别可以控制属性值的 设置和获取<br>ES5中 getter 和 setter 可以 改写默认操作</p>
+<p>当一个属性定义了 getter 或setter 描述符 这个属性就被定义为”访问描述符”，没有getter 或 setter 的被称为 “数据描述符”。</p>
+<p><em>访问描述符 会忽略 value 和 wirtable,关注 getter 、setter 、configurable 、enumerable</em></p>
+<p><strong>存在性</strong><br>判断对象中是否存在该属性</p>
+<ol>
+<li>in 操作符：会检查是否在对象及 [[Prototype]] 链</li>
+<li>hasOwnProperty：只会检查属性是否在对象中，不会检查 [[Prototype]] 链</li>
+<li>枚举：enumerable<br>for … in 遍历对象时 ，只会遍历可枚举的属性(包括 [[Prototype]] 链) </li>
+</ol>
+<p><em>tips: 建议遍历数组使用for 循环，且只在遍历对象上应用 for…in</em></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> k <span class="keyword">in</span> obj)&#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(k,obj[k])</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>for…in 遍历对象时无法直接获取属性值，需要手动获取属性值 </p>
+<p>ES6新增 <code>for...of</code>用于遍历可迭代对象（Array、Map 、Set 、String、arguments …）</p>
+<p><em>for…of 循环首先会向访问对象请求一个迭代器对象，然后通过调用迭代器对象的next()方法来遍历返回所以值</em></p>
+<p>rray、Map 、Set 、String、arguments 这些可迭代对象都内置了@@iterator</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 手动遍历</span></span><br><span class="line"><span class="keyword">var</span> myArray=[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>]</span><br><span class="line"><span class="keyword">var</span> it=myArray[<span class="title class_">Symbol</span>.<span class="property">iterator</span>]()</span><br><span class="line">it.<span class="title function_">next</span>();<span class="comment">//&#123;value:1,done:false&#125;</span></span><br><span class="line">it.<span class="title function_">next</span>();<span class="comment">//&#123;value:2,done:false&#125;</span></span><br><span class="line">it.<span class="title function_">next</span>();<span class="comment">//&#123;value:3,done:false&#125;</span></span><br><span class="line">it.<span class="title function_">next</span>();<span class="comment">//&#123;done:true&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="相关知识点"><a href="#相关知识点" class="headerlink" title="相关知识点"></a>相关知识点</h1><p><a href="/2021/05/13/js/es6/iterator/">Iterator</a></p>
+
+      
+    </div>
+    <div class="article-footer">
+      <!-- <blockquote class="mt-2x"> -->
+  <!-- <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://mandylucky.github.io/2021/05/12/js/%E5%AF%B9%E8%B1%A1/" title="对象" target="_blank" rel="external">https://mandylucky.github.io/2021/05/12/js/%E5%AF%B9%E8%B1%A1/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul> -->
+<!-- </blockquote> -->
+
+
+<!-- <div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/mandylucky" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpeg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/mandylucky" target="_blank"><span class="text-dark">Mandy</span><small class="ml-1x"></small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div> -->
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2021/05/13/js/es6/iterator/" title="Iterator"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2021/05/11/%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F/" title="排序"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">
+        <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/mandylucky" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+
+
+
+
+
+
+</body>
+</html>

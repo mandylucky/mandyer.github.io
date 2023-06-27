@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>数据相关的实例方法 | Mandy&#39;s Blog</title>
+  <meta name="description" content="vm.$watchvm.$setvm.$delete 概述数据相关的实例方法有3个：vm.$watch、vm.$set、vm.$delete,他们是在stateMixin 中挂载到Vue原型中的 Vue大致实现如下： 123456import &amp;#123;stateMixin&amp;#125; from &amp;#x27;.&#x2F;xxx&amp;#x27;function Vue(options)&amp;#123;    &#x2F;&#x2F;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据相关的实例方法">
+<meta property="og:url" content="https://mandylucky.github.io/2021/05/07/js/vue/stateMixin/index.html">
+<meta property="og:site_name" content="Mandy&#39;s Blog">
+<meta property="og:description" content="vm.$watchvm.$setvm.$delete 概述数据相关的实例方法有3个：vm.$watch、vm.$set、vm.$delete,他们是在stateMixin 中挂载到Vue原型中的 Vue大致实现如下： 123456import &amp;#123;stateMixin&amp;#125; from &amp;#x27;.&#x2F;xxx&amp;#x27;function Vue(options)&amp;#123;    &#x2F;&#x2F;">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-05-07T08:41:39.000Z">
+<meta property="article:modified_time" content="2023-06-27T03:33:17.754Z">
+<meta property="article:author" content="Mandy">
+<meta property="article:tag" content="Vue实例方法">
+<meta property="article:tag" content="Vue深入浅出读书笔记">
+<meta name="twitter:card" content="summary">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://mandylucky.github.io/2021/05/07/js/vue/stateMixin/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Mandy&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/mandylucky" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpeg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">Mandy</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md"></h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Beijing, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/mandylucky" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>勤则百弊皆除！</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Vue/">Vue</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/js/">js</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B5%8F%E8%A7%88%E5%99%A8/">浏览器</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E4%B9%8B%E5%A4%96/">编程之外</a><span class="category-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CORS/" rel="tag">CORS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ES6/" rel="tag">ES6</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/STAR/" rel="tag">STAR</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue%E5%AE%9E%E4%BE%8B%E6%96%B9%E6%B3%95/" rel="tag">Vue实例方法</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BA%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">Vue深入浅出读书笔记</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js%E5%9F%BA%E7%A1%80/" rel="tag">js基础</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BD%A0%E4%B8%8D%E7%9F%A5%E9%81%93%E7%9A%84js%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">你不知道的js读书笔记</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86/" rel="tag">响应式原理</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95/" rel="tag">学习方法</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BC%82%E6%AD%A5/" rel="tag">异步</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">数据结构</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/" rel="tag">最佳实践</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8%E5%AD%98%E5%82%A8/" rel="tag">浏览器存储</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%9E%B6%E6%9E%84/" rel="tag">浏览器架构</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8%E7%BC%93%E5%AD%98/" rel="tag">浏览器缓存</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8%E8%B7%A8%E5%9F%9F/" rel="tag">浏览器跨域</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95%E5%9F%BA%E7%A1%80/" rel="tag">算法基础</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%87%AA%E6%88%91%E6%8F%90%E5%8D%87/" rel="tag">自我提升</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/06/">六月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">五月 2021</a><span class="archive-list-count">25</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Vue/">Vue</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/06/27/js/vue/vue%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/" class="title">vue最佳实践</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-06-27T06:50:49.000Z" itemprop="datePublished">2023-06-27</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/js/">js</a>
+              </p>
+              <p class="item-title">
+                <a href="/2021/05/21/js/es6/promise/" class="title">promise</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-05-20T23:43:56.000Z" itemprop="datePublished">2021-05-21</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%B5%8F%E8%A7%88%E5%99%A8/">浏览器</a>
+              </p>
+              <p class="item-title">
+                <a href="/2021/05/18/%E6%B5%8F%E8%A7%88%E5%99%A8/CORS/" class="title">CORS</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-05-17T23:38:13.000Z" itemprop="datePublished">2021-05-18</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%B5%8F%E8%A7%88%E5%99%A8/">浏览器</a>
+              </p>
+              <p class="item-title">
+                <a href="/2021/05/17/%E6%B5%8F%E8%A7%88%E5%99%A8/%E6%B5%8F%E8%A7%88%E5%99%A8%E5%AD%98%E5%82%A8/" class="title">浏览器存储</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-05-17T14:08:22.000Z" itemprop="datePublished">2021-05-17</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%B5%8F%E8%A7%88%E5%99%A8/">浏览器</a>
+              </p>
+              <p class="item-title">
+                <a href="/2021/05/17/%E6%B5%8F%E8%A7%88%E5%99%A8/%E6%B5%8F%E8%A7%88%E5%99%A8%E7%BC%93%E5%AD%98/" class="title">浏览器缓存</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-05-17T14:08:22.000Z" itemprop="datePublished">2021-05-17</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#vm-watch-expOrFn-callback-options"><span class="toc-number">2.</span> <span class="toc-text">vm.$watch(expOrFn,callback,[options])</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E"><span class="toc-number">2.0.1.</span> <span class="toc-text">使用说明</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="toc-number">2.0.2.</span> <span class="toc-text">实现原理</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#vm-set-target-key-value"><span class="toc-number">3.</span> <span class="toc-text">vm.$set(target,key,value)</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E-1"><span class="toc-number">3.0.1.</span> <span class="toc-text">使用说明</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86-1"><span class="toc-number">3.0.2.</span> <span class="toc-text">实现原理</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93%EF%BC%9A%E6%95%B0%E7%BB%84%E7%B1%BB%E5%9E%8B%E7%9B%B4%E6%8E%A5%E7%94%A8spice-%E6%96%B9%E6%B3%95-%E5%AF%B9%E8%B1%A1%E7%B1%BB%E5%9E%8B%E5%88%86%E4%B8%A4%E7%A7%8D%E6%83%85%E5%86%B5-1-%E5%B7%B2%E5%AD%98%E5%9C%A8%E5%B1%9E%E6%80%A7%EF%BC%8C%E7%9B%B4%E6%8E%A5%E4%BF%AE%E6%94%B9%E5%B1%9E%E6%80%A7%E5%80%BC-2-%E6%96%B0%E5%A2%9E%E5%B1%9E%E6%80%A7-%EF%BC%8C%E5%88%86%E4%B8%BA%E4%B8%A4%E7%A7%8D%E6%83%85%E5%86%B5-%E5%AF%B9%E8%B1%A1%E4%B8%8D%E6%98%AF%E5%93%8D%E5%BA%94%E5%BC%8F%E6%95%B0%E6%8D%AE-%E7%9B%B4%E6%8E%A5%E4%BF%AE%E6%94%B9%E5%B1%9E%E6%80%A7%E5%80%BC%EF%BC%8C%E5%AF%B9%E8%B1%A1%E6%98%AF%E5%93%8D%E5%BA%94%E5%BC%8F%E6%95%B0%E6%8D%AE-%E4%BD%BF%E7%94%A8definReactive-%E5%B0%86%E6%96%B0%E5%A2%9E%E5%B1%9E%E6%80%A7%E6%8D%A2%E4%B8%BA%E5%93%8D%E5%BA%94%E5%BC%8F%E6%95%B0%E6%8D%AE%EF%BC%8C%E7%84%B6%E5%90%8E%E8%B0%83%E7%94%A8dep-notify%E9%80%9A%E7%9F%A5%E4%BE%9D%E8%B5%96"><span class="toc-number"></span> <span class="toc-text">总结：数组类型直接用spice 方法,对象类型分两种情况(1)已存在属性，直接修改属性值 (2)新增属性 ，分为两种情况 对象不是响应式数据 直接修改属性值，对象是响应式数据 使用definReactive 将新增属性换为响应式数据，然后调用dep.notify通知依赖</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#vm-delete-target-key"><span class="toc-number">1.</span> <span class="toc-text">vm.$delete(target,key)</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E-2"><span class="toc-number">1.0.1.</span> <span class="toc-text">使用说明</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86-2"><span class="toc-number">1.0.2.</span> <span class="toc-text">实现原理</span></a></li></ol></li></ol></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-js/vue/stateMixin" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      数据相关的实例方法
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2021/05/07/js/vue/stateMixin/" class="article-date">
+	  <time datetime="2021-05-07T08:41:39.000Z" itemprop="datePublished">2021-05-07</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/Vue/">Vue</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/Vue%E5%AE%9E%E4%BE%8B%E6%96%B9%E6%B3%95/" rel="tag">Vue实例方法</a>, <a class="article-tag-link-link" href="/tags/Vue%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BA%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">Vue深入浅出读书笔记</a>
+  </span>
+
+
+        
+
+        <!-- <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2021/05/07/js/vue/stateMixin/#comments" class="article-comment-link">评论</a></span> -->
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <p><a href="#vm.$watch">vm.$watch</a><br><a href="#vm.$set">vm.$set</a><br><a href="#vm.$delete">vm.$delete</a></p>
+<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>数据相关的实例方法有3个：vm.$watch、vm.$set、vm.$delete,他们是在stateMixin 中挂载到Vue原型中的</p>
+<p>Vue大致实现如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123;stateMixin&#125; <span class="keyword">from</span> <span class="string">&#x27;./xxx&#x27;</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">Vue</span>(<span class="params">options</span>)&#123;</span><br><span class="line">    <span class="comment">//....</span></span><br><span class="line">     <span class="title function_">stateMixin</span>(<span class="title class_">Vue</span>)</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123;set,del&#125; <span class="keyword">from</span> <span class="string">&#x27;../observer/index&#x27;</span>;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">stateMixin</span>(<span class="params">Vue</span>)&#123;</span><br><span class="line">    <span class="title class_">Vue</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">$set</span>=set;</span><br><span class="line">    <span class="title class_">Vue</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">$delete</span>=del;</span><br><span class="line">    <span class="title class_">Vue</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">$watch</span>=<span class="keyword">function</span>(<span class="params">expOrFn,cb,options</span>)&#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>下面将详细介绍 vm.$watch、vm.$set、vm.$delete 实现原理</p>
+<h3 id="vm-watch-expOrFn-callback-options"><a href="#vm-watch-expOrFn-callback-options" class="headerlink" title="vm.$watch(expOrFn,callback,[options])"></a><div id="vm.$watch">vm.$watch(expOrFn,callback,[options])</div></h3><h5 id="使用说明"><a href="#使用说明" class="headerlink" title="使用说明"></a>使用说明</h5><p>用于观察一个表达式或者computed函数在Vue.js实例上的变化，变化后触发回调传入new value 和 old value。第一个参数如果是表达式只接受以点分隔eg:a.b.c,如果复杂的表达式，可以用函数代替表达式。   </p>
+<p>参数说明：  </p>
+<p>{string | Function} expOrFn<br>{Function | Object} callback<br>{Object} [options] deep | immediate</p>
+<p>deep:为了发现对象内部值的变化,deep:true<br>immediate:立即触发回调，immediate:true</p>
+<p>返回值：{Function} unwatch</p>
+<p>示例:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">vm.$watch(<span class="string">&#x27;a.b.c&#x27;</span>,<span class="keyword">function</span>(<span class="params">newVal,oldVal</span>)&#123;</span><br><span class="line">    </span><br><span class="line">&#125;)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h5 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h5><p>TODO 待补充…</p>
+<hr>
+<h3 id="vm-set-target-key-value"><a href="#vm-set-target-key-value" class="headerlink" title="vm.$set(target,key,value)"></a><div id="vm.$set">vm.$set(target,key,value)</div></h3><h5 id="使用说明-1"><a href="#使用说明-1" class="headerlink" title="使用说明"></a>使用说明</h5><p>在对象上设置一个属性，如果object 是响应式的，保证属性被创建后也是响应式的，并且触发视图更新。该方法用于解决Vue.js无法监听object添加新属性的问题</p>
+<p>参数说明：</p>
+<p>{Object | Array} target<br>{string | number} key<br>{any} value</p>
+<p>返回值：{Function} unwatch</p>
+<p>示例:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> obj=&#123;<span class="attr">a</span>:<span class="string">&#x27;a&#x27;</span>&#125;</span><br><span class="line"><span class="variable language_">this</span>.$set(obj,<span class="string">&#x27;key&#x27;</span>,<span class="string">&#x27;val&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<h5 id="实现原理-1"><a href="#实现原理-1" class="headerlink" title="实现原理"></a>实现原理</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">set</span>(<span class="params">target,key,value</span>)&#123;</span><br><span class="line">    <span class="comment">//情况一：数组</span></span><br><span class="line">    <span class="keyword">if</span>(<span class="title class_">Array</span>.<span class="title function_">isArray</span>(target) &amp;&amp; <span class="title function_">isValidArrayIndex</span>(key))&#123;</span><br><span class="line">        trget.<span class="property">length</span>=<span class="title class_">Max</span>.<span class="title function_">max</span>(target.<span class="property">length</span>,key);</span><br><span class="line">        target.<span class="title function_">splice</span>(key,<span class="number">1</span>,value)</span><br><span class="line">        <span class="keyword">return</span> value</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//情况二：已存在属性</span></span><br><span class="line">    <span class="keyword">if</span>(target.<span class="title function_">hasOwnProperty</span>(key))&#123;</span><br><span class="line">        target[key]=value</span><br><span class="line">        <span class="keyword">return</span> value</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//情况三：新增属性</span></span><br><span class="line">    <span class="keyword">const</span> ob=target.<span class="property">__ob__</span> <span class="comment">//__ob__属性用于判断是否是响应式对象</span></span><br><span class="line">    <span class="keyword">if</span>(target.<span class="property">_isVue</span> || (ob&amp;&amp;ob.<span class="property">vmCount</span>))&#123;</span><br><span class="line">        <span class="comment">//警告不可以是 vue实例 或者 根数据对象</span></span><br><span class="line">        <span class="keyword">return</span> value</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(!ob)&#123;</span><br><span class="line">        target[key]=value</span><br><span class="line">        <span class="keyword">return</span> value</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title function_">definReactive</span>(ob.<span class="property">value</span>,key,value)<span class="comment">//使用definReactive将新增属性转为响应式数据</span></span><br><span class="line">    ob.<span class="property">dep</span>.<span class="title function_">notify</span>() <span class="comment">//向target的依赖触发变化通知</span></span><br><span class="line">    <span class="keyword">return</span> val</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="总结：数组类型直接用spice-方法-对象类型分两种情况-1-已存在属性，直接修改属性值-2-新增属性-，分为两种情况-对象不是响应式数据-直接修改属性值，对象是响应式数据-使用definReactive-将新增属性换为响应式数据，然后调用dep-notify通知依赖"><a href="#总结：数组类型直接用spice-方法-对象类型分两种情况-1-已存在属性，直接修改属性值-2-新增属性-，分为两种情况-对象不是响应式数据-直接修改属性值，对象是响应式数据-使用definReactive-将新增属性换为响应式数据，然后调用dep-notify通知依赖" class="headerlink" title="总结：数组类型直接用spice 方法,对象类型分两种情况(1)已存在属性，直接修改属性值 (2)新增属性 ，分为两种情况 对象不是响应式数据 直接修改属性值，对象是响应式数据 使用definReactive 将新增属性换为响应式数据，然后调用dep.notify通知依赖"></a>总结：数组类型直接用spice 方法,对象类型分两种情况(1)已存在属性，直接修改属性值 (2)新增属性 ，分为两种情况 对象不是响应式数据 直接修改属性值，对象是响应式数据 使用definReactive 将新增属性换为响应式数据，然后调用dep.notify通知依赖</h2><h3 id="vm-delete-target-key"><a href="#vm-delete-target-key" class="headerlink" title="vm.$delete(target,key)"></a><div id="vm.$delete">vm.$delete(target,key)</div></h3><h5 id="使用说明-2"><a href="#使用说明-2" class="headerlink" title="使用说明"></a>使用说明</h5><p>vm.$delete 方法用来删除数据中的某个属性。如果对象是响应式的要触发视图更新，该方法用于解决Vue.js无法监听object删除新属性的问题</p>
+<p>参数说明：<br>{Object|Array} target<br>{string | number} key/index</p>
+<p>示例:</p>
+<h5 id="实现原理-2"><a href="#实现原理-2" class="headerlink" title="实现原理"></a>实现原理</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">del</span>(<span class="params">target,key</span>)&#123;</span><br><span class="line">    <span class="comment">//数组类型</span></span><br><span class="line">    <span class="keyword">if</span>(<span class="title class_">Array</span>.<span class="title function_">isArray</span>(target) &amp;&amp; <span class="title function_">isValidArrayIndex</span>(key))&#123;</span><br><span class="line">        target.<span class="title function_">splice</span>(key,<span class="number">1</span>)</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//对象类型</span></span><br><span class="line">    <span class="keyword">if</span>(target.<span class="property">_isVue</span> || (ob &amp;&amp; ob.<span class="property">vmCount</span>))&#123;</span><br><span class="line">        <span class="comment">//警告对象不可以是vue实例，也不可以是根数据</span></span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(!<span class="title function_">hasOwn</span>(target,key))&#123;<span class="comment">//key 不存在直接return</span></span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">const</span> ob=target.<span class="property">__ob__</span></span><br><span class="line">    <span class="keyword">delete</span> target[key]</span><br><span class="line">    <span class="keyword">if</span>(!ob)&#123; <span class="comment">//如果不是相应数据无需通知变化</span></span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line">    ob.<span class="property">dep</span>.<span class="title function_">notify</span>()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>总结：数组类型直接用spice 方法，对象类型 分为两种情况(1)不是响应式数据 只做删除操作 (2)是响应式数据删除后触发dep.notify 进行通知,异常处理有两个，（1）target 不可以为跟数据或者vue实例（2）对象中不存在目标key 直接return</p>
+
+      
+    </div>
+    <div class="article-footer">
+      <!-- <blockquote class="mt-2x"> -->
+  <!-- <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://mandylucky.github.io/2021/05/07/js/vue/stateMixin/" title="数据相关的实例方法" target="_blank" rel="external">https://mandylucky.github.io/2021/05/07/js/vue/stateMixin/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul> -->
+<!-- </blockquote> -->
+
+
+<!-- <div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/mandylucky" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpeg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/mandylucky" target="_blank"><span class="text-dark">Mandy</span><small class="ml-1x"></small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div> -->
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2021/05/09/js/vue/lifecycleMixin/" title="生命周期相关的实例方法 之 vm.$forceUpdate 、vm.$destroy"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2021/05/07/js/vue/eventMixin/" title="事件相关的实例方法"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">
+        <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/mandylucky" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+
+
+
+
+
+
+</body>
+</html>

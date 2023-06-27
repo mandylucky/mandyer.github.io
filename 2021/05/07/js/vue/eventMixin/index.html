@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>事件相关的实例方法 | Mandy&#39;s Blog</title>
+  <meta name="description" content="vm.$onvm.$emitvm.$offvm.$once 概述与事件相关的实例方法有4个，分别是:vm.$on 、 vm.$once 、vm.$off 和 vm.$emit,这四个方法是在eventsMixin中被挂载到Vue构造函数的原型中的。 Vue大致实现如下： 123456import &amp;#123;eventsMixin&amp;#125; from &amp;#x27;.&#x2F;events&amp;#x27;fu">
+<meta property="og:type" content="article">
+<meta property="og:title" content="事件相关的实例方法">
+<meta property="og:url" content="https://mandylucky.github.io/2021/05/07/js/vue/eventMixin/index.html">
+<meta property="og:site_name" content="Mandy&#39;s Blog">
+<meta property="og:description" content="vm.$onvm.$emitvm.$offvm.$once 概述与事件相关的实例方法有4个，分别是:vm.$on 、 vm.$once 、vm.$off 和 vm.$emit,这四个方法是在eventsMixin中被挂载到Vue构造函数的原型中的。 Vue大致实现如下： 123456import &amp;#123;eventsMixin&amp;#125; from &amp;#x27;.&#x2F;events&amp;#x27;fu">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-05-07T08:18:36.000Z">
+<meta property="article:modified_time" content="2023-06-27T03:33:17.754Z">
+<meta property="article:author" content="Mandy">
+<meta property="article:tag" content="Vue实例方法">
+<meta property="article:tag" content="Vue深入浅出读书笔记">
+<meta name="twitter:card" content="summary">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://mandylucky.github.io/2021/05/07/js/vue/eventMixin/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Mandy&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/mandylucky" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpeg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">Mandy</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md"></h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Beijing, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/mandylucky" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>勤则百弊皆除！</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Vue/">Vue</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/js/">js</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B5%8F%E8%A7%88%E5%99%A8/">浏览器</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E4%B9%8B%E5%A4%96/">编程之外</a><span class="category-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CORS/" rel="tag">CORS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ES6/" rel="tag">ES6</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/STAR/" rel="tag">STAR</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue%E5%AE%9E%E4%BE%8B%E6%96%B9%E6%B3%95/" rel="tag">Vue实例方法</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BA%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">Vue深入浅出读书笔记</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js%E5%9F%BA%E7%A1%80/" rel="tag">js基础</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BD%A0%E4%B8%8D%E7%9F%A5%E9%81%93%E7%9A%84js%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">你不知道的js读书笔记</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86/" rel="tag">响应式原理</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95/" rel="tag">学习方法</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BC%82%E6%AD%A5/" rel="tag">异步</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">数据结构</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/" rel="tag">最佳实践</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8%E5%AD%98%E5%82%A8/" rel="tag">浏览器存储</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%9E%B6%E6%9E%84/" rel="tag">浏览器架构</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8%E7%BC%93%E5%AD%98/" rel="tag">浏览器缓存</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8%E8%B7%A8%E5%9F%9F/" rel="tag">浏览器跨域</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95%E5%9F%BA%E7%A1%80/" rel="tag">算法基础</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%87%AA%E6%88%91%E6%8F%90%E5%8D%87/" rel="tag">自我提升</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/06/">六月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">五月 2021</a><span class="archive-list-count">25</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Vue/">Vue</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/06/27/js/vue/vue%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/" class="title">vue最佳实践</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-06-27T06:50:49.000Z" itemprop="datePublished">2023-06-27</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/js/">js</a>
+              </p>
+              <p class="item-title">
+                <a href="/2021/05/21/js/es6/promise/" class="title">promise</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-05-20T23:43:56.000Z" itemprop="datePublished">2021-05-21</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%B5%8F%E8%A7%88%E5%99%A8/">浏览器</a>
+              </p>
+              <p class="item-title">
+                <a href="/2021/05/18/%E6%B5%8F%E8%A7%88%E5%99%A8/CORS/" class="title">CORS</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-05-17T23:38:13.000Z" itemprop="datePublished">2021-05-18</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%B5%8F%E8%A7%88%E5%99%A8/">浏览器</a>
+              </p>
+              <p class="item-title">
+                <a href="/2021/05/17/%E6%B5%8F%E8%A7%88%E5%99%A8/%E6%B5%8F%E8%A7%88%E5%99%A8%E5%AD%98%E5%82%A8/" class="title">浏览器存储</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-05-17T14:08:22.000Z" itemprop="datePublished">2021-05-17</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%B5%8F%E8%A7%88%E5%99%A8/">浏览器</a>
+              </p>
+              <p class="item-title">
+                <a href="/2021/05/17/%E6%B5%8F%E8%A7%88%E5%99%A8/%E6%B5%8F%E8%A7%88%E5%99%A8%E7%BC%93%E5%AD%98/" class="title">浏览器缓存</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-05-17T14:08:22.000Z" itemprop="datePublished">2021-05-17</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#vm-on-event-callback"><span class="toc-number">2.</span> <span class="toc-text">vm.$on(event,callback)</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E"><span class="toc-number">2.0.1.</span> <span class="toc-text">使用说明</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="toc-number">2.0.2.</span> <span class="toc-text">实现原理</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#vm-emit-event-%E2%80%A6args"><span class="toc-number">3.</span> <span class="toc-text">vm.$emit(event,[…args])</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E-1"><span class="toc-number">3.0.1.</span> <span class="toc-text">使用说明</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86-1"><span class="toc-number">3.0.2.</span> <span class="toc-text">实现原理</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#vm-off-event-callback"><span class="toc-number">4.</span> <span class="toc-text">vm.$off( [event, callback] )</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E-2"><span class="toc-number">4.0.1.</span> <span class="toc-text">使用说明</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86-2"><span class="toc-number">4.0.2.</span> <span class="toc-text">实现原理</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#vm-once-event-callback"><span class="toc-number">5.</span> <span class="toc-text">vm.$once(event,callback)</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E-3"><span class="toc-number">5.0.1.</span> <span class="toc-text">使用说明</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86-3"><span class="toc-number">5.0.2.</span> <span class="toc-text">实现原理</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F"><span class="toc-number">6.</span> <span class="toc-text">设计模式</span></a></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-js/vue/eventMixin" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      事件相关的实例方法
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2021/05/07/js/vue/eventMixin/" class="article-date">
+	  <time datetime="2021-05-07T08:18:36.000Z" itemprop="datePublished">2021-05-07</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/Vue/">Vue</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/Vue%E5%AE%9E%E4%BE%8B%E6%96%B9%E6%B3%95/" rel="tag">Vue实例方法</a>, <a class="article-tag-link-link" href="/tags/Vue%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BA%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">Vue深入浅出读书笔记</a>
+  </span>
+
+
+        
+
+        <!-- <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2021/05/07/js/vue/eventMixin/#comments" class="article-comment-link">评论</a></span> -->
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <p><a href="#vm.$on">vm.$on</a><br><a href="#vm.$emit">vm.$emit</a><br><a href="#vm.$off">vm.$off</a><br><a href="#vm.$once">vm.$once</a></p>
+<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>与事件相关的实例方法有4个，分别是:vm.$on 、 vm.$once 、vm.$off 和 vm.$emit,这四个方法是在eventsMixin中被挂载到Vue构造函数的原型中的。</p>
+<p>Vue大致实现如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123;eventsMixin&#125; <span class="keyword">from</span> <span class="string">&#x27;./events&#x27;</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">Vue</span>(<span class="params">options</span>)&#123;</span><br><span class="line">    <span class="comment">//....</span></span><br><span class="line">     <span class="title function_">eventsMixin</span>(<span class="title class_">Vue</span>)</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">eventsMixin</span>(<span class="params">Vue</span>)&#123;</span><br><span class="line">    <span class="title class_">Vue</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">$on</span>=<span class="keyword">function</span>(<span class="params">event,fn</span>)&#123;</span><br><span class="line">        <span class="comment">//todo something</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title class_">Vue</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">$emit</span>=<span class="keyword">function</span>(<span class="params">event,fn</span>)&#123;</span><br><span class="line">        <span class="comment">//todo something</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title class_">Vue</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">$once</span>=<span class="keyword">function</span>(<span class="params">event,fn</span>)&#123;</span><br><span class="line">        <span class="comment">//todo something</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title class_">Vue</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">$off</span>=<span class="keyword">function</span>(<span class="params">event,fn</span>)&#123;</span><br><span class="line">        <span class="comment">//todo something</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>下面将详细介绍vm.$on 、 vm.$once 、vm.$off 、vm.$emit 实现原理</p>
+<h3 id="vm-on-event-callback"><a href="#vm-on-event-callback" class="headerlink" title="vm.$on(event,callback)"></a><div id="vm.$on">vm.$on(event,callback)</div></h3><h5 id="使用说明"><a href="#使用说明" class="headerlink" title="使用说明"></a>使用说明</h5><p>作用：监听当前实例上自定义事件，事件由emit 触发。回调函数会接收所有事件触发函数的额外参数</p>
+<p>参数说明：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#123;string | Array&lt;string&gt;&#125; event</span><br><span class="line">&#123;Function&#125; callback</span><br></pre></td></tr></table></figure>
+
+<p>示例:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">vm.$on(<span class="string">&#x27;test&#x27;</span>,<span class="keyword">function</span>(<span class="params">msg</span>)&#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(msg) <span class="comment">// &#x27;hi&#x27;</span></span><br><span class="line">&#125;)</span><br><span class="line">vm.$emit(<span class="string">&#x27;test&#x27;</span>,<span class="string">&#x27;hi&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<h5 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h5><p>注册事件时将回调函数收集起来，触发事件时将收集起来的回调依次调用。<br>vm.$on 需要做的事，就是将回调函数收集起来</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Vue</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">$on</span>=<span class="keyword">function</span>(<span class="params">event,fn</span>)&#123;</span><br><span class="line">    <span class="keyword">const</span> vm=<span class="variable language_">this</span>;</span><br><span class="line">    <span class="keyword">if</span>(<span class="title class_">Array</span>.<span class="title function_">isArray</span>(event))&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">let</span> i=<span class="number">0</span>;i&lt;event.<span class="property">length</span>;i++)&#123;</span><br><span class="line">            <span class="variable language_">this</span>.$on(event[i],fn)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        (vm.<span class="property">_events</span>[event] || vm.<span class="property">_events</span>[event]=[]).<span class="title function_">push</span>(fn)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> vm</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>上述代码中的 vm._events 在 new Vue 初始化时候 在Vue.js实例上创建_events 属性，用于存储事件。 vm._events=Object.create(null)</p>
+</blockquote>
+<h3 id="vm-emit-event-…args"><a href="#vm-emit-event-…args" class="headerlink" title="vm.$emit(event,[…args])"></a><div id="vm.$emit">vm.$emit(event,[…args])</div></h3><h5 id="使用说明-1"><a href="#使用说明-1" class="headerlink" title="使用说明"></a>使用说明</h5><p>触发实例上的事件，并将参数传递给监听器回调。</p>
+<p>参数说明：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#123;string &#125; event</span><br><span class="line">[...args]</span><br></pre></td></tr></table></figure>
+
+<p>示例:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">vm.$on(<span class="string">&#x27;test&#x27;</span>,<span class="keyword">function</span>(<span class="params">msg</span>)&#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(msg) <span class="comment">// &#x27;hi&#x27;</span></span><br><span class="line">&#125;)</span><br><span class="line">vm.$emit(<span class="string">&#x27;test&#x27;</span>,<span class="string">&#x27;hi&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<h5 id="实现原理-1"><a href="#实现原理-1" class="headerlink" title="实现原理"></a>实现原理</h5><p>vm.$on 将事件监听器回调函数都存储在vm._events 中，vm.$emit 从vm._event 中取出事件监听器回调函数列表，依次执行列表中的回调函数并传入参数</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Vue</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">$emit</span>=<span class="keyword">function</span>(<span class="params">event,...args</span>)&#123;</span><br><span class="line">    <span class="keyword">const</span> vm=<span class="variable language_">this</span>;</span><br><span class="line">    <span class="keyword">let</span> cbs=vm.<span class="property">_events</span>[event]</span><br><span class="line">    <span class="keyword">if</span>(cbs)&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">let</span> i=<span class="number">0</span>;i&lt;cbs.<span class="property">length</span>;i++)&#123;</span><br><span class="line">           <span class="keyword">try</span>&#123;</span><br><span class="line">                cbs[i].<span class="title function_">apply</span>(vm,args)</span><br><span class="line">           &#125;<span class="keyword">catch</span>(err)&#123;</span><br><span class="line">               <span class="variable language_">console</span>.<span class="title function_">log</span>(err)</span><br><span class="line">           &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> vm</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="vm-off-event-callback"><a href="#vm-off-event-callback" class="headerlink" title="vm.$off( [event, callback] )"></a><div id="vm.$off">vm.$off( [event, callback] )</div></h3><h5 id="使用说明-2"><a href="#使用说明-2" class="headerlink" title="使用说明"></a>使用说明</h5><p>移除自定义事件的监听器</p>
+<ul>
+<li>如果没有提供参数，则移除所有事件监听器</li>
+<li>如果只提供了事件，则移除该事件所有的监听器</li>
+<li>如果同时提供了事件与回调，则移除这个回调得监听器</li>
+</ul>
+<p>参数说明：<br>{string | Array<string>} event<br>{Function} callback</p>
+<h5 id="实现原理-2"><a href="#实现原理-2" class="headerlink" title="实现原理"></a>实现原理</h5><p>根据提供的参数情况，来移除监听器</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Vue</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">$off</span>=<span class="keyword">function</span>(<span class="params">event,fn</span>)&#123;</span><br><span class="line">    <span class="keyword">const</span> vm=<span class="variable language_">this</span>;</span><br><span class="line">    <span class="comment">//情况一：没有参数移除所有事件监听器</span></span><br><span class="line">    <span class="keyword">if</span>(!<span class="variable language_">arguments</span>.<span class="property">length</span>)&#123; </span><br><span class="line">        vm.<span class="property">_events</span>=<span class="title class_">Object</span>.<span class="title function_">create</span>(<span class="literal">null</span>)</span><br><span class="line">        <span class="keyword">return</span> vm</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//处理参数为数组的情况</span></span><br><span class="line">    <span class="keyword">if</span>(<span class="title class_">Array</span>.<span class="title function_">isArray</span>(event))&#123; <span class="comment">// event 为数组</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">let</span> i=<span class="number">0</span>;i&lt;event.<span class="property">length</span>;i++)&#123;</span><br><span class="line">            <span class="variable language_">this</span>.$off(event[i],fn)</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> vm</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">const</span> cb=<span class="variable language_">this</span>.<span class="property">_events</span>[event];</span><br><span class="line">    <span class="keyword">if</span>(!cbs)&#123;</span><br><span class="line">        <span class="keyword">return</span> vm</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//情况二: 只提供了事件，移除该事件所有的监听器</span></span><br><span class="line">    <span class="keyword">if</span>(<span class="variable language_">arguments</span>.<span class="property">length</span> ===<span class="number">1</span>)&#123; </span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">_events</span>[event]=<span class="literal">null</span></span><br><span class="line">        <span class="keyword">return</span> vm</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//情况三：同时提供了事件和回调函数，只移除与fn相同的监听器</span></span><br><span class="line">    <span class="keyword">if</span>(fn)&#123; </span><br><span class="line">        <span class="keyword">const</span> cbs=vm.<span class="property">_events</span>[event];</span><br><span class="line">        <span class="keyword">let</span> cb;</span><br><span class="line">        <span class="keyword">let</span> i=cbs.<span class="property">length</span>;</span><br><span class="line">        <span class="keyword">while</span>(i--)&#123; <span class="comment">//细节注意：从后往前遍历，不会影响到未遍历到的监听器</span></span><br><span class="line">            cb=cbs[i];</span><br><span class="line">            <span class="keyword">if</span>(cb===fn || cb.<span class="property">fn</span>===fn)&#123; <span class="comment">//cb.fn===fn 是干啥的？vm.$once中具体讲解</span></span><br><span class="line">                cbs.<span class="title function_">splice</span>(i,<span class="number">1</span>);</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> vm</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="vm-once-event-callback"><a href="#vm-once-event-callback" class="headerlink" title="vm.$once(event,callback)"></a><div id="vm.$once">vm.$once(event,callback)</div></h3><h5 id="使用说明-3"><a href="#使用说明-3" class="headerlink" title="使用说明"></a>使用说明</h5><p>监听一个自定义事件，但只触发一次，在一次触发之后移除监听器</p>
+<p>参数：<br>{string | Array<string>} event<br>{Function} callback</p>
+<h5 id="实现原理-3"><a href="#实现原理-3" class="headerlink" title="实现原理"></a>实现原理</h5><p>监听一个自定义事件，但只触发一次，在一次触发之后移除监听器。上述描述可以使用vm.$on 来监听事件， 使用vm.$off移除监听</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Vue</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">$once</span>=<span class="keyword">function</span>(<span class="params">event,fn</span>)&#123;</span><br><span class="line">    <span class="keyword">const</span> vm=<span class="variable language_">this</span>;</span><br><span class="line">    <span class="keyword">function</span> <span class="title function_">on</span>(<span class="params">...args</span>)&#123;</span><br><span class="line">        vm.$off(event,on) <span class="comment">//移除自定义事件监听器</span></span><br><span class="line">        fn.<span class="title function_">apply</span>(vm,args) <span class="comment">//触发回调</span></span><br><span class="line">    &#125;</span><br><span class="line">    on.<span class="property">fn</span>=fn <span class="comment">//这里为啥这样呢？思考一下</span></span><br><span class="line">    vm.$on(event,on)</span><br><span class="line">    <span class="keyword">return</span> vm</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>为什么会有 on.fn=fn  这行代码？<br>思考一个场景，用户在触发事件之前调用vm.$off,那么用户会这么写：<code>vm.$off(&#39;xxx&#39;,fn)</code><br>而此时_events是这样的：<code>vm._events=&#123;&#39;xxx&#39;:[on]&#125;</code>,on 和 fn 不一致那么就不会溢出监听器。<br>结合vm.$off源码，如果on和fn不相等的时候，还会判断on.fn 和 fn 是否相等，如果相等也会移除监听器。这也就是为什么要写on.fn=fn 这行代码的原因。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//vm.$off 源码片段</span></span><br><span class="line"><span class="keyword">if</span>(cb===fn || cb.<span class="property">fn</span>===fn)&#123;</span><br><span class="line">    cbs.<span class="title function_">splice</span>(i,<span class="number">1</span>);</span><br><span class="line">    <span class="keyword">break</span></span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="设计模式"><a href="#设计模式" class="headerlink" title="设计模式"></a>设计模式</h3><p>Vue 的事件使用了发布订阅模式，有关发布订阅模式的详细介绍可以看这里 <a target="_blank" rel="noopener" href="https://www.cnblogs.com/lovesong/p/5272752.html">点我</a></p>
+
+      
+    </div>
+    <div class="article-footer">
+      <!-- <blockquote class="mt-2x"> -->
+  <!-- <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://mandylucky.github.io/2021/05/07/js/vue/eventMixin/" title="事件相关的实例方法" target="_blank" rel="external">https://mandylucky.github.io/2021/05/07/js/vue/eventMixin/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul> -->
+<!-- </blockquote> -->
+
+
+<!-- <div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/mandylucky" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpeg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/mandylucky" target="_blank"><span class="text-dark">Mandy</span><small class="ml-1x"></small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div> -->
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2021/05/07/js/vue/stateMixin/" title="数据相关的实例方法"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">
+        <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/mandylucky" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+
+
+
+
+
+
+</body>
+</html>
