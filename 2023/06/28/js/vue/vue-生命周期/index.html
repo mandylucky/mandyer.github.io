@@ -17,16 +17,21 @@
   <meta http-equiv="window-target" content="_top" />
   
   
-  <title>标签: 数据结构 | Mandy&#39;s Blog</title>
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Mandy&#39;s Blog">
-<meta property="og:url" content="https://mandylucky.github.io/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/index.html">
+  <title>vue 生命周期 | Mandy&#39;s Blog</title>
+  <meta name="description" content="Vue 生命周期分为4个阶段：初始化阶段、模板编译阶段、挂载阶段、卸载阶段 初始化阶段new Vue()到created 之间的阶段叫初始化阶段，这个阶段主要目的是在Vue.js实例上初始化一些属性、事件以及响应式数据。  模板编译阶段在created 钩子函数与beforeMount钩子函数之间的阶段，这个阶段主要是将模板编译为渲染函数。 当使用vue-loader&#x2F;vueify时，*.vue文">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vue 生命周期">
+<meta property="og:url" content="https://mandylucky.github.io/2023/06/28/js/vue/vue-%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/index.html">
 <meta property="og:site_name" content="Mandy&#39;s Blog">
+<meta property="og:description" content="Vue 生命周期分为4个阶段：初始化阶段、模板编译阶段、挂载阶段、卸载阶段 初始化阶段new Vue()到created 之间的阶段叫初始化阶段，这个阶段主要目的是在Vue.js实例上初始化一些属性、事件以及响应式数据。  模板编译阶段在created 钩子函数与beforeMount钩子函数之间的阶段，这个阶段主要是将模板编译为渲染函数。 当使用vue-loader&#x2F;vueify时，*.vue文">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-06-28T02:29:35.000Z">
+<meta property="article:modified_time" content="2023-06-28T03:08:34.182Z">
 <meta property="article:author" content="Mandy">
+<meta property="article:tag" content="生命周期">
 <meta name="twitter:card" content="summary">
   <!-- Canonical links -->
-  <link rel="canonical" href="https://mandylucky.github.io/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/index.html">
+  <link rel="canonical" href="https://mandylucky.github.io/2023/06/28/js/vue/vue-%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/index.html">
   
     <link rel="alternate" href="/atom.xml" title="Mandy&#39;s Blog" type="application/atom+xml">
   
@@ -283,88 +288,144 @@
 </aside>
 
   
-  <main class="main" role="main">
-  <article class="content article article-tags post-type-list" itemscope="">
-    <header class="article-header">
-      <h1 itemprop="name" class="hidden-xs">标签: 数据结构</h1>
-      <p class="text-muted hidden-xs">共 1 篇文章</p>
-      <nav role="navigation" id="nav-main" class="okayNav">
-        <ul>
-          <li><a href="/tags">All</a></li>
-          
-          <li><a href="/tags/你不知道的js读书笔记/">你不知道的js读书笔记</a></li>
-          
-          <li><a href="/tags/js基础/">js基础</a></li>
-          
-          <li><a href="/tags/学习方法/">学习方法</a></li>
-          
-          <li><a href="/tags/STAR/">STAR</a></li>
-          
-          <li><a href="/tags/算法基础/">算法基础</a></li>
-          
-          <li><a href="/tags/自我提升/">自我提升</a></li>
-          
-          <li><a href="/tags/数据结构/">数据结构</a></li>
-          
-          <li><a href="/tags/浏览器存储/">浏览器存储</a></li>
-          
-          <li><a href="/tags/CORS/">CORS</a></li>
-          
-          <li><a href="/tags/浏览器缓存/">浏览器缓存</a></li>
-          
-          <li><a href="/tags/浏览器架构/">浏览器架构</a></li>
-          
-          <li><a href="/tags/浏览器跨域/">浏览器跨域</a></li>
-          
-          <li><a href="/tags/异步/">异步</a></li>
-          
-          <li><a href="/tags/ES6/">ES6</a></li>
-          
-          <li><a href="/tags/Vue实例方法/">Vue实例方法</a></li>
-          
-          <li><a href="/tags/Vue深入浅出读书笔记/">Vue深入浅出读书笔记</a></li>
-          
-          <li><a href="/tags/响应式原理/">响应式原理</a></li>
-          
-          <li><a href="/tags/最佳实践/">最佳实践</a></li>
-          
-          <li><a href="/tags/生命周期/">生命周期</a></li>
-          
-        </ul>
-      </nav>
-    </header>
-    <!-- /header -->
-    <div class="article-body">
-      <div class="row">
-        
-<div class="col-md-6">
+  
+<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96%E9%98%B6%E6%AE%B5"><span class="toc-number">1.</span> <span class="toc-text">初始化阶段</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A8%A1%E6%9D%BF%E7%BC%96%E8%AF%91%E9%98%B6%E6%AE%B5"><span class="toc-number">2.</span> <span class="toc-text">模板编译阶段</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8D%B8%E8%BD%BD%E9%98%B6%E6%AE%B5"><span class="toc-number">3.</span> <span class="toc-text">卸载阶段</span></a></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-js/vue/vue-生命周期" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
     
-<article class="panel panel-default hover-shadow hover-grow" itemscope itemtype="http://schema.org/BlogPosting">
-  <div class="panel-body">
-     <div class="article-meta">
-       <time datetime="2021-05-11T05:20:01.000Z" itemprop="datePublished">2021-05-11</time>
-     </div>
-     <h3 class="article-title" itemprop="name">
-       <a class="article-link" href="/2021/05/11/%E7%AE%97%E6%B3%95/%E6%A0%91/">树</a>
-     </h3>
-   </div>
-   
-   <div class="panel-footer">
-     
-      <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="label label-default mb">数据结构</a>
-     
-     
-   </div>
-   
-</article>
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      vue 生命周期
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2023/06/28/js/vue/vue-%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/" class="article-date">
+	  <time datetime="2023-06-28T02:29:35.000Z" itemprop="datePublished">2023-06-28</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/Vue/">Vue</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/" rel="tag">生命周期</a>
+  </span>
 
 
-</div>
+        
 
+        <!-- <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2023/06/28/js/vue/vue-%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/#comments" class="article-comment-link">评论</a></span> -->
+        
       </div>
     </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <p><strong>Vue 生命周期分为4个阶段：初始化阶段、模板编译阶段、挂载阶段、卸载阶段</strong></p>
+<h4 id="初始化阶段"><a href="#初始化阶段" class="headerlink" title="初始化阶段"></a>初始化阶段</h4><p>new Vue()到created 之间的阶段叫初始化阶段，这个阶段主要目的是在Vue.js实例上初始化一些属性、事件以及响应式数据。 </p>
+<h4 id="模板编译阶段"><a href="#模板编译阶段" class="headerlink" title="模板编译阶段"></a>模板编译阶段</h4><p>在created 钩子函数与beforeMount钩子函数之间的阶段，这个阶段主要是将模板编译为渲染函数。</p>
+<p>当使用vue-loader/vueify时，*.vue文件内部的模板会在构建时预编译成javascript,运行时模板已经预编译成了渲染函数，所以在生命周期中不存在模板编译阶段。</p>
+<p>已挂载状态时，当状态发生变化 vue会通知组件使用虚拟dom重新渲染</p>
+<h4 id="卸载阶段"><a href="#卸载阶段" class="headerlink" title="卸载阶段"></a>卸载阶段</h4><p>应用调用vm.$destroy方法后，Vue.js 的生命周期会进入卸载阶段。这个阶段Vue会将自身从父组件中删除，取消实例上所有依赖的追踪并且移除所有的事件监听器。</p>
+
+      
+    </div>
+    <div class="article-footer">
+      <!-- <blockquote class="mt-2x"> -->
+  <!-- <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://mandylucky.github.io/2023/06/28/js/vue/vue-%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/" title="vue 生命周期" target="_blank" rel="external">https://mandylucky.github.io/2023/06/28/js/vue/vue-%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul> -->
+<!-- </blockquote> -->
+
+
+<!-- <div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/mandylucky" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpeg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/mandylucky" target="_blank"><span class="text-dark">Mandy</span><small class="ml-1x"></small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div> -->
+
+
+    </div>
   </article>
-   
+  
+    
+  <section id="comments">
+  	
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    
+    <li class="next">
+      <a href="/2023/06/27/js/vue/vue%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/" title="vue最佳实践"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">
+        <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+  </div>
+  </div>
+</nav>
+  
+
+
 </main>
 
   <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
@@ -418,6 +479,12 @@ window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
 
 
 
+   
+
+
+
+
+   
 
 
 
