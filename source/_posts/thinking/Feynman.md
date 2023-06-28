@@ -1,6 +1,6 @@
 ---
 title: Feynman
-tags: ['学习方法']
+tags: []
 toc: true
 date: 2021-05-15 13:36:11
 categories: 编程之外

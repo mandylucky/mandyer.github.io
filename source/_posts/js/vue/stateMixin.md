@@ -1,7 +1,7 @@
 ---
 title: 数据相关的实例方法
 date: 2021-05-07 16:41:39
-tags: ['Vue实例方法','Vue深入浅出读书笔记']
+tags: ['Vue深入浅出读书笔记']
 categories : Vue 
 toc: true
 ---

@@ -1,7 +1,7 @@
 ---
 title: this
 date: 2021-05-11 07:44:54
-tags: ['你不知道的js读书笔记','js基础']
+tags: ['你不知道的js读书笔记']
 categories : js
 toc: true
 ---

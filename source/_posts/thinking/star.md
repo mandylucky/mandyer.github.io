@@ -1,6 +1,6 @@
 ---
 title: STAR
-tags: ['STAR']
+tags: []
 toc: true
 date: 2021-05-15 13:32:43
 categories: 编程之外

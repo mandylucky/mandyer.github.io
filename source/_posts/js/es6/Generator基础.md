@@ -1,6 +1,6 @@
 ---
 title: Generator基础
-tags: ['ES6']
+tags: []
 toc: true
 date: 2021-05-14 07:00:00
 categories: js

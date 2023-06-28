@@ -1,6 +1,6 @@
 ---
 title: promise
-tags: ['ES6']
+tags: []
 toc: true
 date: 2021-05-21 07:43:56
 categories: js

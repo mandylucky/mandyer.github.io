@@ -1,7 +1,7 @@
 ---
 title: 生命周期相关的实例方法 之 vm.$forceUpdate 、vm.$destroy
 date: 2021-05-09 11:29:27
-tags: ['Vue实例方法','Vue深入浅出读书笔记']
+tags: ['Vue深入浅出读书笔记']
 categories : Vue 
 toc: true
 ---

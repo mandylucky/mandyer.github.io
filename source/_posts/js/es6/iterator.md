@@ -1,6 +1,6 @@
 ---
 title: Iterator
-tags: ['ES6']
+tags: []
 toc: true
 date: 2021-05-13 08:35:38
 categories: js

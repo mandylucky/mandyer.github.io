@@ -1,6 +1,6 @@
 ---
 title: CORS
-tags: ['CORS']
+tags: []
 toc: true
 date: 2021-05-18 07:38:13
 categories: 浏览器

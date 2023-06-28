@@ -1,6 +1,6 @@
 ---
 title: Generator 函数的异步应用
-tags: ['异步','ES6']
+tags: []
 toc: true
 date: 2021-05-16 07:34:04
 categories: js
